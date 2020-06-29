@@ -57,9 +57,6 @@ func astar_add_walkable_cells(obstacles = []):
 		# coordinates from and to Vector3s
 		astar_node.add_point(point_index, Vector3(point.x, point.y, point.z))		
 			
-	print("Astart points", astar_node.get_points())
-	print('========')
-	print(points_array)
 	return points_array
 
 
@@ -86,10 +83,8 @@ func astar_connect_walkable_cells(points_array):
 			var point_relative_index = calculate_point_index(point_relative)
 
 			if (point_relative_index == -1):
-				print("no relative index")
 				continue
 			if not astar_node.has_point(point_relative_index):
-				print("no astar index")
 				continue
 			# Note the 3rd argument. It tells the astar_node that we want the
 			# connection to be bilateral: from point A to B and B to A
@@ -150,29 +145,22 @@ func grid_to_world(pos):
 func find_path(world_start, world_end):
 	_set_path_start_position(world_to_grid(world_start))
 	_set_path_end_position(world_to_grid(world_end))
-	print("Click target Grid coordinates", world_start, ", ", world_end)
 	_recalculate_path()
-	print('OG point path: ', _point_path)
 	var path_world = []
 	for point in _point_path:
 		var point_world = grid_to_world(Vector3(point.x, point.y, point.z))
 		path_world.append(point_world)
-#	print('Path world: ', path_world)
 	return path_world
 
 
 func _recalculate_path():
 	clear_previous_path_drawing()
-	print("Start pos: ", path_start_position, ", End pos: ", path_end_position)
 	var start_point_index = calculate_point_index(Vector3(path_start_position.x, path_start_position.y, path_start_position.z))
 	var end_point_index = calculate_point_index(Vector3(path_end_position.x, path_end_position.y, path_end_position.z))
-	print("Start pos I: ", start_point_index, ", End pos I: ", end_point_index)
 	var cells = get_used_cells()
-	print(cells[start_point_index], cells[end_point_index])
 	# This method gives us an array of points. Note you need the start and end
 	# points' indices as input
 	_point_path = astar_node.get_point_path(start_point_index, end_point_index)
-	print(_point_path)
 	# Redraw the lines and circles from the start to the end point
 #	update()
 
@@ -204,7 +192,6 @@ func _draw():
 # Setters for the start and end path values.
 func _set_path_start_position(value):
 	if value in obstacles:
-		print('start obstacolo')
 		return
 
 	path_start_position = value
@@ -214,7 +201,6 @@ func _set_path_start_position(value):
 
 func _set_path_end_position(value):
 	if value in obstacles:
-		print('end obstacolo')
 		return
 
 	path_end_position = value

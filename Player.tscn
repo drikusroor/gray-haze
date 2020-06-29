@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Position3D.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/mp40_n10.png" type="Texture" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+height = 2.96559
+
+[node name="Player" type="Position3D"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2 )
+script = ExtResource( 1 )
+
+[node name="PlayerSprite" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32619, 0 )
+opacity = 0.5
+texture = ExtResource( 2 )
+
+[node name="PlayerStaticBody" type="StaticBody" parent="."]
+input_capture_on_drag = true
+
+[node name="PlayerCollisionShape" type="CollisionShape" parent="PlayerStaticBody"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.5, 0 )
+shape = SubResource( 1 )

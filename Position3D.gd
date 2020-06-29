@@ -1,9 +1,15 @@
 extends Position3D
 
 export(float) var SPEED = 10.0
-var RAY_LENGTH = 444444444444444 #Arbitrarily large ray 
 
+
+enum PLAYER_TYPES { PLAYER, NPC }
+enum PLAYER_TEAMS { ALLIES, AXIS, CIVILIANS }
 enum STATES { IDLE, FOLLOW }
+export(bool) var selected = false
+
+var _player_type = PLAYER_TYPES.PLAYER
+var _player_team = PLAYER_TEAMS.ALLIES
 var _state = null
 
 var path = []
@@ -12,18 +18,44 @@ var target_translation = Vector3()
 
 var velocity = Vector3()
 
+onready var waypoint_correct_scene = preload("res://WaypointCorrect.tscn")
+onready var waypoint_incorrect_scene = preload("res://WaypointIncorrect.tscn")
+onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
+onready var gridmap = get_node("/root/Game/GridMap")
+onready var game = get_node("/root/Game")
+onready var player_sprite = get_node("PlayerSprite")
+
 func _ready():
 	_change_state(STATES.IDLE)
 
+func deselect():
+	player_sprite.opacity = 0.5
+	if selected:
+		selected = false
+		
+func select():
+	player_sprite.opacity = 1
+	if not selected:
+		selected = true
 
 func _change_state(new_state):
 	if new_state == STATES.FOLLOW:
-		path = get_parent().get_node('GridMap').find_path(translation, target_translation)
+		path = gridmap.find_path(translation, target_translation)
 		if not path or len(path) == 1:
 			_change_state(STATES.IDLE)
 			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
+		print(waypoint_container)
+		
+		for node in path:
+			var waypoint = waypoint_correct_scene.instance()
+			var waypoint_pos = node
+			waypoint_pos.y = waypoint_pos.y + 0.1
+			waypoint.translation = waypoint_pos
+			waypoint.modulate.a = 0.3
+			waypoint_container.add_child(waypoint)
+		
 		target_point_world = path[1]
 	_state = new_state
 
@@ -39,13 +71,9 @@ func _process(delta):
 	if arrived_to_next_point:
 		path.remove(0)
 		if len(path) == 0:
-#			translation.x = round(translation.x / 32.0) * 32
-#			translation.y = round(translation.y / 32.0) * 32
-#			rotation.y = stepify(rotation.y, PI/2)
 			_change_state(STATES.IDLE)
 			return
 		target_point_world = path[0]
-
 
 func move_to(world_position):
 	var MASS = 1.0
@@ -55,28 +83,9 @@ func move_to(world_position):
 	var steering = desired_velocity - velocity
 	velocity += steering / MASS
 	translation += velocity * get_process_delta_time()
-#	rotation = velocity.angle()
 	return translation.distance_to(world_position) < ARRIVE_DISTANCE
 	
-func get_objects_under_mouse():
-	var camera = get_viewport().get_camera()
-	var mouse_pos = get_viewport().get_mouse_position()
-	var ray_from = camera.project_ray_origin(mouse_pos)
-	var ray_to = ray_from + camera.project_ray_normal(mouse_pos) * RAY_LENGTH
-	var space_state = get_world().direct_space_state
-	var selection = space_state.intersect_ray(ray_from, ray_to)
-	return selection
-
-func _input(event):
-	if event.is_action_pressed('click'):
-		
-		var selection = get_objects_under_mouse()
-		if (selection.size() == 0):
-			print('No hit')
-			return
-		var position3D = selection.position
-		print('Click target', position3D)
-
-		target_translation = position3D
-		_change_state(STATES.FOLLOW)
-	
+func start_move(selection):
+	var position3D = selection.position
+	target_translation = position3D
+	_change_state(STATES.FOLLOW)

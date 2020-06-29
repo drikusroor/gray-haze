@@ -27,6 +27,11 @@ click={
  ]
 }
 
+[layer_names]
+
+3d_render/layer_1="PlayerRender"
+3d_physics/layer_1="Players"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
