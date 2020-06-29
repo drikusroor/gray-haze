@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/ground_riverStraight.obj-5e20b75ef3d06ce2e50c7ebd41655cb7.mesh"
+
+[deps]
+
+files=[ "res://.import/ground_riverStraight.obj-5e20b75ef3d06ce2e50c7ebd41655cb7.mesh" ]
+
+source_file="res://assets/models/ground_riverStraight.obj"
+dest_files=[ "res://.import/ground_riverStraight.obj-5e20b75ef3d06ce2e50c7ebd41655cb7.mesh", "res://.import/ground_riverStraight.obj-5e20b75ef3d06ce2e50c7ebd41655cb7.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

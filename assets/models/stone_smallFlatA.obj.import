@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/stone_smallFlatA.obj-ca91c30771c1a773c373da2104e4f75b.mesh"
+
+[deps]
+
+files=[ "res://.import/stone_smallFlatA.obj-ca91c30771c1a773c373da2104e4f75b.mesh" ]
+
+source_file="res://assets/models/stone_smallFlatA.obj"
+dest_files=[ "res://.import/stone_smallFlatA.obj-ca91c30771c1a773c373da2104e4f75b.mesh", "res://.import/stone_smallFlatA.obj-ca91c30771c1a773c373da2104e4f75b.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

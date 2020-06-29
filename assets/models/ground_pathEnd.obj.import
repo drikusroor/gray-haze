@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/ground_pathEnd.obj-1de055a4ab3b5b8e6820da71d6e42850.mesh"
+
+[deps]
+
+files=[ "res://.import/ground_pathEnd.obj-1de055a4ab3b5b8e6820da71d6e42850.mesh" ]
+
+source_file="res://assets/models/ground_pathEnd.obj"
+dest_files=[ "res://.import/ground_pathEnd.obj-1de055a4ab3b5b8e6820da71d6e42850.mesh", "res://.import/ground_pathEnd.obj-1de055a4ab3b5b8e6820da71d6e42850.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

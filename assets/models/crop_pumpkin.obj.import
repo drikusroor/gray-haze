@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/crop_pumpkin.obj-2537e5b110e6269c7b65576998b89826.mesh"
+
+[deps]
+
+files=[ "res://.import/crop_pumpkin.obj-2537e5b110e6269c7b65576998b89826.mesh" ]
+
+source_file="res://assets/models/crop_pumpkin.obj"
+dest_files=[ "res://.import/crop_pumpkin.obj-2537e5b110e6269c7b65576998b89826.mesh", "res://.import/crop_pumpkin.obj-2537e5b110e6269c7b65576998b89826.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

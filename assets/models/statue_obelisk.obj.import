@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/statue_obelisk.obj-61ff62ef2eb24414d5ea1a2a1457f01a.mesh"
+
+[deps]
+
+files=[ "res://.import/statue_obelisk.obj-61ff62ef2eb24414d5ea1a2a1457f01a.mesh" ]
+
+source_file="res://assets/models/statue_obelisk.obj"
+dest_files=[ "res://.import/statue_obelisk.obj-61ff62ef2eb24414d5ea1a2a1457f01a.mesh", "res://.import/statue_obelisk.obj-61ff62ef2eb24414d5ea1a2a1457f01a.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

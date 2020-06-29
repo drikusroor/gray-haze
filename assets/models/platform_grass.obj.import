@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/platform_grass.obj-8c214f26e2e2894b64a7128e4de74a05.mesh"
+
+[deps]
+
+files=[ "res://.import/platform_grass.obj-8c214f26e2e2894b64a7128e4de74a05.mesh" ]
+
+source_file="res://assets/models/platform_grass.obj"
+dest_files=[ "res://.import/platform_grass.obj-8c214f26e2e2894b64a7128e4de74a05.mesh", "res://.import/platform_grass.obj-8c214f26e2e2894b64a7128e4de74a05.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

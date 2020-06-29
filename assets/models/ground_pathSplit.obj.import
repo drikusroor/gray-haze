@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/ground_pathSplit.obj-8af24ab8aaab3ce2b9d89445cf5c74ae.mesh"
+
+[deps]
+
+files=[ "res://.import/ground_pathSplit.obj-8af24ab8aaab3ce2b9d89445cf5c74ae.mesh" ]
+
+source_file="res://assets/models/ground_pathSplit.obj"
+dest_files=[ "res://.import/ground_pathSplit.obj-8af24ab8aaab3ce2b9d89445cf5c74ae.mesh", "res://.import/ground_pathSplit.obj-8af24ab8aaab3ce2b9d89445cf5c74ae.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

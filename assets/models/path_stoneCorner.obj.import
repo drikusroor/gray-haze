@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/path_stoneCorner.obj-4aed52f4f0644ae21d5346d038475d5e.mesh"
+
+[deps]
+
+files=[ "res://.import/path_stoneCorner.obj-4aed52f4f0644ae21d5346d038475d5e.mesh" ]
+
+source_file="res://assets/models/path_stoneCorner.obj"
+dest_files=[ "res://.import/path_stoneCorner.obj-4aed52f4f0644ae21d5346d038475d5e.mesh", "res://.import/path_stoneCorner.obj-4aed52f4f0644ae21d5346d038475d5e.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

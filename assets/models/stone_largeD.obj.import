@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/stone_largeD.obj-3687af5d7d947198c55247fdd0b3af60.mesh"
+
+[deps]
+
+files=[ "res://.import/stone_largeD.obj-3687af5d7d947198c55247fdd0b3af60.mesh" ]
+
+source_file="res://assets/models/stone_largeD.obj"
+dest_files=[ "res://.import/stone_largeD.obj-3687af5d7d947198c55247fdd0b3af60.mesh", "res://.import/stone_largeD.obj-3687af5d7d947198c55247fdd0b3af60.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

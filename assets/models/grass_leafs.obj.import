@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/grass_leafs.obj-9473874d67f0451ccc38c7ea3b0a091e.mesh"
+
+[deps]
+
+files=[ "res://.import/grass_leafs.obj-9473874d67f0451ccc38c7ea3b0a091e.mesh" ]
+
+source_file="res://assets/models/grass_leafs.obj"
+dest_files=[ "res://.import/grass_leafs.obj-9473874d67f0451ccc38c7ea3b0a091e.mesh", "res://.import/grass_leafs.obj-9473874d67f0451ccc38c7ea3b0a091e.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

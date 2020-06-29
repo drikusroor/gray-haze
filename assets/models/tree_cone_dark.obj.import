@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/tree_cone_dark.obj-75b8003ecf10f527e30d588af97d601c.mesh"
+
+[deps]
+
+files=[ "res://.import/tree_cone_dark.obj-75b8003ecf10f527e30d588af97d601c.mesh" ]
+
+source_file="res://assets/models/tree_cone_dark.obj"
+dest_files=[ "res://.import/tree_cone_dark.obj-75b8003ecf10f527e30d588af97d601c.mesh", "res://.import/tree_cone_dark.obj-75b8003ecf10f527e30d588af97d601c.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

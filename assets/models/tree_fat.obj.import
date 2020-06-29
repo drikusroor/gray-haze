@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/tree_fat.obj-9fbc9c775264639ca9dfefd908302898.mesh"
+
+[deps]
+
+files=[ "res://.import/tree_fat.obj-9fbc9c775264639ca9dfefd908302898.mesh" ]
+
+source_file="res://assets/models/tree_fat.obj"
+dest_files=[ "res://.import/tree_fat.obj-9fbc9c775264639ca9dfefd908302898.mesh", "res://.import/tree_fat.obj-9fbc9c775264639ca9dfefd908302898.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
