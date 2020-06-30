@@ -50,6 +50,7 @@ func _change_state(new_state):
 		
 		for node in path:
 			var waypoint = waypoint_correct_scene.instance()
+			waypoint.init(self)
 			var waypoint_pos = node
 			waypoint.translation = waypoint_pos
 			waypoint.modulate.a = 0.3
@@ -68,11 +69,10 @@ func _process(delta):
 		return
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
-		for waypoint in waypoint_container.get_children():
-			if waypoint.translation == path[0]:
-				waypoint.queue_free()
+		waypoint_container.remove_waypoint(self, path[0])
 		path.remove(0)
 		if len(path) == 0:
+			waypoint_container.remove_owner_waypoints(self)
 			_change_state(STATES.IDLE)
 			return
 		target_point_world = path[0]
@@ -88,6 +88,7 @@ func move_to(world_position):
 	return translation.distance_to(world_position) < ARRIVE_DISTANCE
 	
 func start_move(selection):
+	waypoint_container.remove_owner_waypoints(self)
 	var position3D = selection.position
 	target_translation = position3D
 	_change_state(STATES.FOLLOW)

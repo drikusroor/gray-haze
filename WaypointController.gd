@@ -13,6 +13,16 @@ func _ready():
 func reset_waypoints():
 	for child in get_children():
 		child.queue_free()
+		
+func remove_owner_waypoints(owner):
+	for child in get_children():
+		if child._owner == owner:
+			child.queue_free()
+		
+func remove_waypoint(owner, position):
+	for child in get_children():
+			if child.translation == position and child._owner == owner:
+				child.queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -3,5 +3,5 @@
 [ext_resource path="res://assets/sprites/waypoint-invalid.png" type="Texture" id=1]
 
 [node name="WaypointIncorrect" type="Sprite3D"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0 )
 texture = ExtResource( 1 )

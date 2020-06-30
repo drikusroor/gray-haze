@@ -1,9 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/sprites/waypoint.png" type="Texture" id=1]
+[ext_resource path="res://Waypoint.gd" type="Script" id=2]
 
 [node name="WaypointCorrect" type="Sprite3D"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 opacity = 0.3
 pixel_size = 0.02
 texture = ExtResource( 1 )
+script = ExtResource( 2 )
