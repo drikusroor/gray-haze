@@ -32,8 +32,14 @@ onready var _half_cell_size = real_cell_size / 2
 func _ready():
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
 	astar_connect_walkable_cells(walkable_cells_list)
-	
 
+func find_cell_by_vector(vector):
+	vector = world_to_grid(vector)
+	var found = null
+	for cell in get_used_cells():
+		if cell == vector:
+			return cell
+		
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_node, except the obstacles
 func astar_add_walkable_cells(obstacles = []):
@@ -129,17 +135,33 @@ func _get_offset():
 			cell_size.y * 0.5 * int(cell_center_y),
 			cell_size.z * 0.5 * int(cell_center_z));
 
-func world_to_grid(pos):
+func world_to_grid_old(pos):
 	var v = pos / cell_size
 	return Vector3(stepify(v.x, 1), stepify(v.y, 1), stepify(v.z, 1))
 
+func world_to_grid(pos):
+	var offset = _get_offset()
+	var v = Vector3(
+		pos.x / cell_size.x,
+		pos.y / cell_size.y,
+		pos.z / cell_size.z
+	)
+	var cells = get_used_cells()
+	var nearest = cells[0]
+	for cell in cells:
+		if v.distance_to(nearest) > v.distance_to(cell):
+			nearest = cell
+#	print("Nearest ", nearest)
+#	print("Old ", world_to_grid_old(pos))
+	return nearest
 
 func grid_to_world(pos):
 	var offset = _get_offset();
 	var world_pos = Vector3(
-			pos.x * cell_size.x + offset.x,
-			pos.y * cell_size.y + offset.y,
-			pos.z * cell_size.z + offset.z);
+		pos.x * cell_size.x, # + offset.x,
+		pos.y * cell_size.y, # + offset.y,
+		pos.z * cell_size.z # + offset.z
+	);
 	return world_pos;
 
 func find_path(world_start, world_end):
@@ -206,3 +228,8 @@ func _set_path_end_position(value):
 	path_end_position = value
 	if path_start_position != value:
 		_recalculate_path()
+
+func handle_hover(selection):
+	var cell = find_cell_by_vector(selection.position)
+	print(cell)
+	

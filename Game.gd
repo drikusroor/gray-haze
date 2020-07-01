@@ -47,7 +47,8 @@ func _input(event):
 			current_player = player
 			player.select()
 			print("select player ", player.get_name())
-		else:
+		
+		if name == "GridMap":
 			current_player.start_move(selection)
 			
 	if event.is_action_pressed('ui_focus_next'):
@@ -66,7 +67,20 @@ func _input(event):
 						current_player = player
 						player.select()
 					break
+					
+func handle_hover():
+	var selection = get_objects_under_mouse()
+	if (selection.size() == 0):
+		return
+		
+	var collider = selection.collider
+	var name = collider.get_name()
+	
+	if name == "GridMap":
+		var gridmap = collider
+		gridmap.handle_hover(selection)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	handle_hover()
+	

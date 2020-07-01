@@ -2,10 +2,16 @@ extends Position3D
 
 export(float) var SPEED = 10.0
 
+# Stats
+var max_ap = 20
+var ap = 20
+var max_hp = 20
+var hp = 20
 
 enum PLAYER_TYPES { PLAYER, NPC }
 enum PLAYER_TEAMS { ALLIES, AXIS, CIVILIANS }
 enum STATES { IDLE, FOLLOW }
+enum WALKING_SPEED { SNEAK, WALK, RUN }
 export(bool) var selected = false
 
 var _player_type = PLAYER_TYPES.PLAYER
@@ -24,9 +30,16 @@ onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer"
 onready var gridmap = get_node("/root/Game/GridMap")
 onready var game = get_node("/root/Game")
 onready var player_sprite = get_node("PlayerSprite")
+onready var player_audio = get_node("PlayerAudio")
 
 func _ready():
 	_change_state(STATES.IDLE)
+	
+func reset_ap():
+	ap = max_ap
+	
+func reset_hp():
+	hp = max_hp
 
 func deselect():
 	player_sprite.opacity = 0.5
@@ -46,7 +59,7 @@ func _change_state(new_state):
 			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
-		print(waypoint_container)
+		player_audio.play()
 		
 		for node in path:
 			var waypoint = waypoint_correct_scene.instance()
@@ -57,6 +70,9 @@ func _change_state(new_state):
 			waypoint_container.add_child(waypoint)
 		
 		target_point_world = path[1]
+	if new_state == STATES.IDLE:
+		player_audio.stop()
+		
 	_state = new_state
 
 func _process(delta):
@@ -70,9 +86,11 @@ func _process(delta):
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
 		waypoint_container.remove_waypoint(self, path[0])
+		var next_point = path[0]
 		path.remove(0)
 		if len(path) == 0:
 			waypoint_container.remove_owner_waypoints(self)
+			translation = next_point
 			_change_state(STATES.IDLE)
 			return
 		target_point_world = path[0]
