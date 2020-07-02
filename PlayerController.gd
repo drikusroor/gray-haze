@@ -27,13 +27,18 @@ var velocity = Vector3()
 onready var waypoint_correct_scene = preload("res://WaypointCorrect.tscn")
 onready var waypoint_incorrect_scene = preload("res://WaypointIncorrect.tscn")
 onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
-onready var gridmap = get_node("/root/Game/GridMap")
 onready var game = get_node("/root/Game")
+onready var gridmap = get_node("/root/Game/GridMap")
 onready var player_sprite = get_node("PlayerSprite")
 onready var player_audio = get_node("PlayerAudio")
 
 func _ready():
 	_change_state(STATES.IDLE)
+	
+func init_player(position):
+	reset_ap()
+	reset_hp()
+	translation = position
 	
 func reset_ap():
 	ap = max_ap

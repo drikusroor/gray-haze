@@ -1,0 +1,139 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://EndOfTurn.gd" type="Script" id=1]
+[ext_resource path="res://UI.gd" type="Script" id=2]
+[ext_resource path="res://TabController.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.137255, 0.121569, 0.109804, 1 )
+corner_detail = 1
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="PlayerPanelContainer" type="PanelContainer" parent="."]
+visible = false
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -150.0
+margin_right = -300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerPanel" type="Panel" parent="PlayerPanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 717.0
+margin_bottom = 143.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="PlayerPanelContainer/PlayerPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -8.0
+tab_align = 0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Adriana" type="Tabs" parent="PlayerPanelContainer/PlayerPanel/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="PlayerName" type="RichTextLabel" parent="PlayerPanelContainer/PlayerPanel/TabContainer/Adriana"]
+visible = false
+margin_left = 29.2343
+margin_top = -12.5759
+margin_right = 141.234
+margin_bottom = 3.42407
+bbcode_text = "Drikus"
+text = "Drikus"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AP" type="RichTextLabel" parent="PlayerPanelContainer/PlayerPanel/TabContainer/Adriana"]
+visible = false
+margin_left = 105.644
+margin_top = -3.84521
+margin_right = 233.644
+margin_bottom = 12.1548
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HP" type="RichTextLabel" parent="PlayerPanelContainer/PlayerPanel/TabContainer/Adriana"]
+visible = false
+margin_left = 314.727
+margin_top = -3.05151
+margin_right = 442.727
+margin_bottom = 12.9485
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Drikus" type="Tabs" parent="PlayerPanelContainer/PlayerPanel/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Robert" type="Tabs" parent="PlayerPanelContainer/PlayerPanel/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="ActionPanelContainer" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -300.0
+margin_top = -150.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionPanel" type="Panel" parent="ActionPanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 293.0
+margin_bottom = 143.0
+
+[node name="EndOfTurn" type="Button" parent="ActionPanelContainer/ActionPanel"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -228.0
+margin_top = -44.0561
+margin_right = -3.64032
+margin_bottom = -4.05609
+text = "END OF TURN"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="select_player" from="." to="PlayerPanelContainer/PlayerPanel/TabContainer" method="_on_UI_select_player"]
+[connection signal="tab_changed" from="PlayerPanelContainer/PlayerPanel/TabContainer" to="PlayerPanelContainer/PlayerPanel/TabContainer" method="_on_TabContainer_tab_changed"]
+[connection signal="pressed" from="ActionPanelContainer/ActionPanel/EndOfTurn" to="ActionPanelContainer/ActionPanel/EndOfTurn" method="_on_EndOfTurn_pressed"]

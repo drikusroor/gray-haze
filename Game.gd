@@ -6,20 +6,65 @@ var RAY_LENGTH = 444444444444444 #Arbitrarily large ray
 # var b = "text"
 
 enum GAME_STATES { PAUSED, MAIN_MENU, CUTSCENE, PLAYING }
+enum TEAMS { PLAYER, AXIS, CIVILIANS, SPECIAL }
+signal select_player(player)
+onready var current_team = TEAMS.PLAYER
 onready var current_player = null
 onready var player_container = get_node("/root/Game/PlayerContainer")
+onready var gridmap = get_node("GridMap")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if player_container:
-		var players = player_container.get_children()
-		if players.size() > 0:
-			var player = players[0]
-			current_player = player
-			player.select()
+	gridmap.init_gridmap()
+	player_container.init_players()
+	next_round()
+
+func end_round():
+	pass # insert function body here
+
+func next_round():
+	for player in player_container.get_children():
+		player.reset_ap()
+	set_current_team(TEAMS.PLAYER)
+	start_turn()
+	
+		
+func next_turn():
+	if current_team == TEAMS.PLAYER:
+		set_current_team(TEAMS.AXIS)
+	elif current_team == TEAMS.AXIS:
+		set_current_team(TEAMS.CIVILIANS)
+	elif current_team == TEAMS.CIVILIANS:
+		set_current_team(TEAMS.SPECIAL)
+	else:
+		end_round()
+		next_round()
+		
+	start_turn()
+		
+func start_turn():
+	if current_team == TEAMS.PLAYER:
+		if player_container:
+			if current_player:
+				current_player.deselect()
+				current_player = null
+			var players = player_container.get_children()
+			if players.size() > 0:
+				var player = players[0]
+				current_player = player
+				player.select()
+			
+func set_current_team(team):
+	current_team = team
 			
 func set_current_player(player):
 	current_player = player
+	
+func select_player(player):
+	current_player.deselect()
+	set_current_player(player)
+	player.select()
+	emit_signal("select_player", player)
 	
 func get_objects_under_mouse():
 	var camera = get_viewport().get_camera()
@@ -30,7 +75,7 @@ func get_objects_under_mouse():
 	var selection = space_state.intersect_ray(ray_from, ray_to)
 	return selection
 
-func _input(event):
+func _unhandled_input(event):
 	if event.is_action_pressed('click'):
 		
 		var selection = get_objects_under_mouse()
@@ -43,9 +88,7 @@ func _input(event):
 		
 		if name == "PlayerStaticBody":
 			var player = collider.get_parent()
-			current_player.deselect()
-			current_player = player
-			player.select()
+			select_player(player)
 			print("select player ", player.get_name())
 		
 		if name == "GridMap":
@@ -57,15 +100,12 @@ func _input(event):
 		if (players.size() > 0):
 			for i in range(players.size()):
 				if current_player == players[i]:
-					current_player.deselect()
+					var next_player = null
 					if players.size() - 1 == i:
-						var player = players[0]
-						current_player = player
-						player.select()		
+						next_player = players[0]
 					else: 
-						var player = players[i + 1]
-						current_player = player
-						player.select()
+						next_player = players[i + 1]
+					select_player(next_player)
 					break
 					
 func handle_hover():
