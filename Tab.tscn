@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Tab.gd" type="Script" id=1]
+
+[node name="Tab" type="Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerName" type="RichTextLabel" parent="."]
+margin_left = 28.7343
+margin_top = 41.9241
+margin_right = 140.734
+margin_bottom = 57.9241
+bbcode_text = "Drikus"
+text = "Drikus"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AP" type="RichTextLabel" parent="."]
+margin_left = 104.144
+margin_top = 41.1548
+margin_right = 232.144
+margin_bottom = 57.1548
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HP" type="RichTextLabel" parent="."]
+margin_left = 314.727
+margin_top = -3.05151
+margin_right = 442.727
+margin_bottom = 12.9485
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}

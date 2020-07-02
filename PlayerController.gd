@@ -32,10 +32,13 @@ onready var gridmap = get_node("/root/Game/GridMap")
 onready var player_sprite = get_node("PlayerSprite")
 onready var player_audio = get_node("PlayerAudio")
 
+var _name = ""
+
 func _ready():
 	_change_state(STATES.IDLE)
 	
-func init_player(position):
+func init_player(position, data):
+	_name = data.name
 	reset_ap()
 	reset_hp()
 	translation = position

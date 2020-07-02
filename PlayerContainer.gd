@@ -5,9 +5,8 @@ extends Node
 onready var player_scene = preload("res://Player.tscn")
 onready var game = get_node("/root/Game")
 onready var gridmap = get_node("/root/Game/GridMap")
-var initial_players = ["Drikus", "Adriana", "Robert", "Peter", "Vladimir", "Mark R.",
-"Addy","Adel","Adela","Adelaida","Adelaide","Adele","Adelheid","Adelice","Adelina",
-"Adelind","Adeline","Adella","Adelle","Adena","Adey","Joey", "SHarif"]
+signal players_initialized()
+var initial_players = ["Drikus", "Adriana", "Robert", "Peter", "Vladimir", "Mark R.", "Joey", "Sharif"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,12 +28,9 @@ func init_players():
 					valid_position = false
 			
 			if valid_position:
-				player.init_player(world_position)
+				player.init_player(world_position, { "name": p })
 				add_child(player)
 				break
-				
 			
-			
-	
 	var players = get_children()
-		
+	emit_signal("players_initialized")	

@@ -61,9 +61,11 @@ func set_current_player(player):
 	current_player = player
 	
 func select_player(player):
-	current_player.deselect()
+	if (current_player):
+		current_player.deselect()
 	set_current_player(player)
 	player.select()
+	
 	emit_signal("select_player", player)
 	
 func get_objects_under_mouse():
@@ -80,7 +82,6 @@ func _unhandled_input(event):
 		
 		var selection = get_objects_under_mouse()
 		if (selection.size() == 0):
-			print('No hit')
 			return
 		
 		var collider = selection.collider
@@ -89,13 +90,11 @@ func _unhandled_input(event):
 		if name == "PlayerStaticBody":
 			var player = collider.get_parent()
 			select_player(player)
-			print("select player ", player.get_name())
 		
 		if name == "GridMap":
 			current_player.start_move(selection)
 			
 	if event.is_action_pressed('ui_focus_next'):
-		print('tab')
 		var players = player_container.get_children()
 		if (players.size() > 0):
 			for i in range(players.size()):
