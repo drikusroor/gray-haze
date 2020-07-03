@@ -10,7 +10,7 @@ var hp = 20
 
 enum PLAYER_TYPES { PLAYER, NPC }
 enum PLAYER_TEAMS { ALLIES, AXIS, CIVILIANS }
-enum STATES { IDLE, FOLLOW }
+enum STATES { IDLE, PLANNING, FOLLOW }
 enum WALKING_SPEED { SNEAK, WALK, RUN }
 export(bool) var selected = false
 
@@ -60,8 +60,18 @@ func select():
 		selected = true
 
 func _change_state(new_state):
-	if new_state == STATES.FOLLOW:
+	if new_state == STATES.PLANNING:
 		path = gridmap.find_path(translation, target_translation)
+		for node in path:
+			var ap_left = ap
+			var waypoint = waypoint_correct_scene.instance()
+			waypoint.init(self)
+			var waypoint_pos = node
+			waypoint.translation = waypoint_pos
+			waypoint.modulate.a = 0.3
+			waypoint_container.add_child(waypoint)
+			
+	elif new_state == STATES.FOLLOW:
 		if not path or len(path) == 1:
 			_change_state(STATES.IDLE)
 			return
@@ -114,7 +124,16 @@ func move_to(world_position):
 	return translation.distance_to(world_position) < ARRIVE_DISTANCE
 	
 func start_move(selection):
-	waypoint_container.remove_owner_waypoints(self)
 	var position3D = selection.position
-	target_translation = position3D
-	_change_state(STATES.FOLLOW)
+	var gridmap_position = gridmap.world_to_grid(position3D)
+	var target_translation_gridmap_position = gridmap.world_to_grid(target_translation)
+	
+	waypoint_container.remove_owner_waypoints(self)
+	if gridmap_position == target_translation_gridmap_position:
+		_change_state(STATES.FOLLOW)
+	else:
+		target_translation = position3D
+		_change_state(STATES.PLANNING)
+		
+		
+	

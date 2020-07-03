@@ -138,10 +138,6 @@ func _get_offset():
 			cell_size.y * 0.5 * int(cell_center_y),
 			cell_size.z * 0.5 * int(cell_center_z));
 
-func world_to_grid_old(pos):
-	var v = pos / cell_size
-	return Vector3(stepify(v.x, 1), stepify(v.y, 1), stepify(v.z, 1))
-
 func world_to_grid(pos):
 	var offset = _get_offset()
 	var v = Vector3(
