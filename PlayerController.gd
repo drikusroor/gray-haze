@@ -56,6 +56,8 @@ func reset_hp():
 	hp = max_hp
 
 func deselect():
+	if _state == STATES.PLANNING:
+		waypoint_container.remove_owner_waypoints(self)
 	player_sprite.opacity = 0.5
 	if selected:
 		selected = false
