@@ -24,12 +24,10 @@ func _on_players_initialized():
 		add_child(tab)
 		set_tab_title(i, player._name)
 		
-	
-	
-
 func _on_select_player(player):
 	for i in range(get_children().size()):
 		var tab = get_children()[i]
 		if (player == tab._player):
 			set_current_tab(i)
+			tab.update_tab_data()
 			break

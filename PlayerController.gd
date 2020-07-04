@@ -24,8 +24,9 @@ var target_translation = Vector3()
 
 var velocity = Vector3()
 
-onready var waypoint_correct_scene = preload("res://WaypointCorrect.tscn")
-onready var waypoint_incorrect_scene = preload("res://WaypointIncorrect.tscn")
+signal player_updated(player)
+
+onready var waypoint_correct_scene = preload("res://Waypoint.tscn")
 onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
 onready var game = get_node("/root/Game")
 onready var gridmap = get_node("/root/Game/GridMap")
@@ -58,52 +59,66 @@ func select():
 	player_sprite.opacity = 1
 	if not selected:
 		selected = true
+		
+func draw_waypoints(path):
+	print(path)
+	var ap_left = ap
+	for node_i in range(path.size()):
+		var node = path[node_i]
+		var waypoint = waypoint_correct_scene.instance()
+		waypoint.init(self, 0)
+		var waypoint_pos = node
+		waypoint.translation = waypoint_pos
+		waypoint_container.add_child(waypoint)
+		waypoint.sprite.modulate.a = 0.3
+		ap_left -= 2
+		
+		if ap_left < 0:
+			waypoint.set_type(1)
+		
+		# if node_i == path.size() - 1:
+			# TODO: Set text of last waypoint with AP cost of move
+			# waypoint.set_ap_cost(ap_left)
 
 func _change_state(new_state):
 	if new_state == STATES.PLANNING:
 		path = gridmap.find_path(translation, target_translation)
-		for node in path:
-			var ap_left = ap
-			var waypoint = waypoint_correct_scene.instance()
-			waypoint.init(self)
-			var waypoint_pos = node
-			waypoint.translation = waypoint_pos
-			waypoint.modulate.a = 0.3
-			waypoint_container.add_child(waypoint)
+		draw_waypoints(path)
 			
 	elif new_state == STATES.FOLLOW:
-		if not path or len(path) == 1:
+		if not path or len(path) == 0:
 			_change_state(STATES.IDLE)
 			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
 		player_audio.play()
+		draw_waypoints(path)
+		target_point_world = path[0]
 		
-		for node in path:
-			var waypoint = waypoint_correct_scene.instance()
-			waypoint.init(self)
-			var waypoint_pos = node
-			waypoint.translation = waypoint_pos
-			waypoint.modulate.a = 0.3
-			waypoint_container.add_child(waypoint)
-		
-		target_point_world = path[1]
 	if new_state == STATES.IDLE:
 		player_audio.stop()
 		
 	_state = new_state
 
 func _process(delta):
-	
 	var camera_pos = get_viewport().get_camera().global_transform.origin
 	camera_pos.y = 0
 	look_at(camera_pos, Vector3(0, 1, 0))
 	
 	if not _state == STATES.FOLLOW:
 		return
+		
+	if ap < 2:
+		return
+		
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
+		
+		
+		ap -= 2
+		emit_signal("player_updated")
 		waypoint_container.remove_waypoint(self, path[0])
+				
 		var next_point = path[0]
 		path.remove(0)
 		if len(path) == 0:
@@ -111,6 +126,7 @@ func _process(delta):
 			translation = next_point
 			_change_state(STATES.IDLE)
 			return
+		
 		target_point_world = path[0]
 
 func move_to(world_position):
