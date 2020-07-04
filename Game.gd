@@ -94,8 +94,20 @@ func _unhandled_input(event):
 		if name == "GridMap":
 			gridmap.refresh_astar(current_player)
 			current_player.start_move(selection)
-			
-	if event.is_action_pressed('ui_focus_next'):
+	
+	if event.is_action_pressed('ui_focus_prev'):
+		var players = player_container.get_children()
+		if (players.size() > 0):
+			for i in range(players.size()):
+				if current_player == players[i]:
+					var prev_player = null
+					if i == 0:
+						prev_player = players[players.size() - 1]
+					else: 
+						prev_player = players[i - 1]
+					select_player(prev_player)
+					break
+	elif event.is_action_pressed('ui_focus_next'):
 		var players = player_container.get_children()
 		if (players.size() > 0):
 			for i in range(players.size()):

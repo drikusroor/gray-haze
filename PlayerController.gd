@@ -162,5 +162,8 @@ func start_move(selection):
 		target_translation = position3D
 		_change_state(STATES.PLANNING)
 		
-		
-	
+func _unhandled_input(event):
+	if event.is_action_pressed('ui_cancel'):
+		if _state == STATES.PLANNING:
+			waypoint_container.remove_owner_waypoints(self)
+			_change_state(STATES.IDLE)
