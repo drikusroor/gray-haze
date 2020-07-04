@@ -180,6 +180,7 @@ func astar_connect_walkable_cells_diagonal(points_array):
 
 
 func is_outside_map_bounds(point):
+	print(map_size)
 	return point.x < 0 or point.y < 0 or point.x >= map_size.x or point.y >= map_size.y
 
 func calculate_point_index(point):
@@ -228,7 +229,8 @@ func find_path(world_start, world_end):
 	for point in _point_path:
 		var point_world = grid_to_world(Vector3(point.x, point.y, point.z))
 		path_world.append(point_world)
-	path_world.remove(0)
+	if path_world.size() > 0:
+		path_world.remove(0)
 	return path_world
 
 func _recalculate_path():

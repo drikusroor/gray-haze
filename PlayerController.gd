@@ -3,10 +3,10 @@ extends Position3D
 export(float) var SPEED = 10.0
 
 # Stats
-var max_ap = 20
-var ap = 20
-var max_hp = 20
-var hp = 20
+var max_ap = 25
+var ap = 25
+var max_hp = 25
+var hp = 25
 
 enum PLAYER_TYPES { PLAYER, NPC }
 enum PLAYER_TEAMS { ALLIES, AXIS, CIVILIANS }
@@ -26,10 +26,15 @@ var velocity = Vector3()
 
 signal player_updated(player)
 
+# Scenes
 onready var waypoint_correct_scene = preload("res://Waypoint.tscn")
 onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
+
+# HOC components
 onready var game = get_node("/root/Game")
 onready var gridmap = get_node("/root/Game/GridMap")
+
+# Children
 onready var player_sprite = get_node("PlayerSprite")
 onready var player_audio = get_node("PlayerAudio")
 
