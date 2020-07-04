@@ -5,6 +5,7 @@ onready var sprite = get_node("Sprite3D")
 var textures = [load("res://assets/sprites/waypoint.png"), load("res://assets/sprites/waypoint-invalid.png")]
 var _owner = null
 var _type = 0
+var target = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

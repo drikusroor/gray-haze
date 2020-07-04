@@ -15,7 +15,7 @@ onready var gridmap = get_node("GridMap")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	gridmap.init_gridmap()
+	gridmap.refresh_astar()
 	player_container.init_players()
 	next_round()
 
@@ -92,6 +92,7 @@ func _unhandled_input(event):
 			select_player(player)
 		
 		if name == "GridMap":
+			gridmap.refresh_astar(current_player)
 			current_player.start_move(selection)
 			
 	if event.is_action_pressed('ui_focus_next'):

@@ -1,12 +1,7 @@
 extends GridMap
 
-func get_used_cells_by_id(id : int):
-	var arr = []
-	var tiles = get_used_cells()
-	for i in tiles:
-		if(get_cell_item(i.x, i.y, i.z) == id):
-			arr.append(i)
-	return arr
+onready var player_container = get_parent().get_node("PlayerContainer")
+onready var waypoint_container = get_node("WaypointContainer")
 
 # You can only create an AStar node from code, not from the Scene tab
 onready var astar_node = AStar.new()
@@ -26,14 +21,17 @@ const DRAW_COLOR = Color('#fff')
 # get_used_cells_by_id is a method from the TileMap node
 # here the id 0 corresponds to the grey tile, the obstacles
 var real_cell_size = cell_size
-onready var obstacles = get_used_cells_by_id(1)
 onready var _half_cell_size = real_cell_size / 2
+onready var obstacles = get_obstacles()
+onready var player_positions = get_player_positions()
+onready var target_positions = get_target_positions()
 
 func _ready():
 	pass	
 
-func init_gridmap():
-	var walkable_cells_list = astar_add_walkable_cells(obstacles)
+func refresh_astar(player = null):
+	astar_node = AStar.new()
+	var walkable_cells_list = astar_add_walkable_cells(player)
 	astar_connect_walkable_cells(walkable_cells_list)
 
 func find_cell_by_vector(vector):
@@ -42,18 +40,76 @@ func find_cell_by_vector(vector):
 	for cell in get_used_cells():
 		if cell == vector:
 			return cell
+			
+func get_used_cells_by_id(id : int):
+	var arr = []
+	var tiles = get_used_cells()
+	for i in tiles:
+		if(get_cell_item(i.x, i.y, i.z) == id):
+			arr.append(i)
+	return arr
+	
+# Tells us wether a cell is walkable
+# Also takes into account other players
+# and other players' target node
+func is_walkable_cell(position):
+	for obstacle in obstacles:
+		if obstacle == position:
+			return false
+			
+	for player_position in player_positions:
+		if player_position == position:
+			return false
+	
+	for target_position in target_positions:
+		if target_position == position:
+			return false
+			
+	return true
+	
+func get_obstacles():
+	obstacles = get_used_cells_by_id(1)
+	
+	return obstacles
+	
+func get_player_positions():
+	var player_positions = []
+	for player in player_container.get_children():
+		player_positions.append(world_to_grid(player.translation))
+	
+	return player_positions
+	
+func get_target_positions():
+	var target_positions = []
+	for waypoint in waypoint_container.get_children():
+		if waypoint.target:
+			target_positions.append(world_to_grid(waypoint.translation))
+	
+	return target_positions
+	
+func refresh_obstacles():
+	obstacles = get_obstacles()
+	player_positions = get_player_positions()
+	target_positions = get_target_positions()
 		
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_node, except the obstacles
-func astar_add_walkable_cells(obstacles = []):
+func astar_add_walkable_cells(player = null):
 	var points_array = []
 	var cells = get_used_cells()
+	var player_grid_position = null
+	if player:
+		player_grid_position = world_to_grid(player.translation)
+	refresh_obstacles()
 	
 	for i in range(cells.size()):
 		var c = cells[i]
 		var type = get_cell_item(c.x, c.y, c.z)
 		var point = c
 		if type == 1:
+			continue
+			
+		if not is_walkable_cell(c) && c != player_grid_position:
 			continue
 			
 		points_array.append(point)
@@ -114,6 +170,10 @@ func astar_connect_walkable_cells_diagonal(points_array):
 
 				if point_relative == point or is_outside_map_bounds(point_relative):
 					continue
+					
+				if not is_walkable_cell(point_relative):
+					continue
+					
 				if not astar_node.has_point(point_relative_index):
 					continue
 				astar_node.connect_points(point_index, point_relative_index, true)
@@ -149,8 +209,6 @@ func world_to_grid(pos):
 	for cell in cells:
 		if v.distance_to(nearest) > v.distance_to(cell):
 			nearest = cell
-#	print("Nearest ", nearest)
-#	print("Old ", world_to_grid_old(pos))
 	return nearest
 
 func grid_to_world(pos):

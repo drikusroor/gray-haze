@@ -17,4 +17,3 @@ func remove_waypoint(owner, position):
 	for child in get_children():
 			if child.translation == position and child._owner == owner:
 				child.queue_free()
-

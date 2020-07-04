@@ -61,7 +61,6 @@ func select():
 		selected = true
 		
 func draw_waypoints(path):
-	print(path)
 	var ap_left = ap
 	for node_i in range(path.size()):
 		var node = path[node_i]
@@ -70,7 +69,12 @@ func draw_waypoints(path):
 		var waypoint_pos = node
 		waypoint.translation = waypoint_pos
 		waypoint_container.add_child(waypoint)
-		waypoint.sprite.modulate.a = 0.3
+		waypoint.sprite.modulate.a = 0.5
+		
+		if node_i == path.size() - 1:
+			waypoint.target = true
+			waypoint.sprite.scale = Vector3(2, 2, 0)
+		
 		ap_left -= 2
 		
 		if ap_left < 0:
@@ -139,7 +143,7 @@ func move_to(world_position):
 	translation += velocity * get_process_delta_time()
 	return translation.distance_to(world_position) < ARRIVE_DISTANCE
 	
-func start_move(selection):
+func start_move(selection):	
 	var position3D = selection.position
 	var gridmap_position = gridmap.world_to_grid(position3D)
 	var target_translation_gridmap_position = gridmap.world_to_grid(target_translation)
