@@ -106,7 +106,7 @@ func _change_state(new_state):
 		draw_waypoints(path)
 		target_point_world = path[0]
 		
-	if new_state == STATES.IDLE:
+	if new_state != STATES.FOLLOW:
 		player_audio.stop()
 		
 	_state = new_state
@@ -120,6 +120,7 @@ func _process(delta):
 		return
 		
 	if ap < 2:
+		_change_state(STATES.PLANNING)
 		return
 		
 	var arrived_to_next_point = move_to(target_point_world)
