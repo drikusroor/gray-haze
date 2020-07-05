@@ -20,55 +20,86 @@ __meta__ = {
 }
 
 [node name="PlayerName" type="RichTextLabel" parent="."]
-margin_left = 12.0
-margin_right = 231.0
+margin_left = 60.0
+margin_right = 279.0
 margin_bottom = 32.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
-bbcode_text = "Drikus"
-text = "Drikus"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hp_label" type="RichTextLabel" parent="."]
+margin_left = -4.0
+margin_top = 24.0
+margin_right = 52.0
+margin_bottom = 56.0
+rect_pivot_offset = Vector2( 96, 16 )
+custom_fonts/normal_font = SubResource( 1 )
+text = "HP"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ap_label" type="RichTextLabel" parent="."]
+margin_left = -4.0
+margin_top = 48.0
+margin_right = 52.0
+margin_bottom = 80.0
+rect_pivot_offset = Vector2( 96, 16 )
+custom_fonts/normal_font = SubResource( 1 )
+text = "AP"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="state_label" type="RichTextLabel" parent="."]
+margin_left = -4.0
+margin_top = 72.0
+margin_right = 52.0
+margin_bottom = 104.0
+rect_pivot_offset = Vector2( 96, 16 )
+custom_fonts/normal_font = SubResource( 1 )
+text = "State"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HP" type="RichTextLabel" parent="."]
-margin_left = 12.0
+margin_left = 60.0
 margin_top = 24.0
-margin_right = 231.0
+margin_right = 279.0
 margin_bottom = 56.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
-bbcode_text = "Drikus"
-text = "Drikus"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AP" type="RichTextLabel" parent="."]
-margin_left = 12.0
+margin_left = 60.0
 margin_top = 48.0
-margin_right = 231.0
+margin_right = 279.0
 margin_bottom = 80.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
-bbcode_text = "Drikus"
-text = "Drikus"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="STATE" type="RichTextLabel" parent="."]
-margin_left = 12.0
+margin_left = 60.0
 margin_top = 72.0
-margin_right = 231.0
+margin_right = 279.0
 margin_bottom = 104.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
-bbcode_text = "Drikus"
-text = "Drikus"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
