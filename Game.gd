@@ -44,15 +44,26 @@ func next_turn():
 		
 func start_turn():
 	if current_team == TEAMS.PLAYER:
+		# TODO Enable menu
+		
 		if player_container:
-			if current_player:
-				current_player.deselect()
-				current_player = null
 			var players = player_container.get_children()
-			if players.size() > 0:
+			if players.size() > 0 and not current_player:
 				var player = players[0]
 				current_player = player
 				player.select()
+	else:
+		# TODO Disable menu
+		pass
+		
+	if current_team == TEAMS.AXIS:
+		start_timer_next_turn()
+		
+	if current_team == TEAMS.CIVILIANS:
+		start_timer_next_turn()
+		
+	if current_team == TEAMS.SPECIAL:
+		start_timer_next_turn()
 			
 func set_current_team(team):
 	current_team = team
@@ -87,13 +98,15 @@ func _unhandled_input(event):
 		var collider = selection.collider
 		var name = collider.get_name()
 		
-		if name == "PlayerStaticBody":
-			var player = collider.get_parent()
-			select_player(player)
-		
-		if name == "GridMap":
-			gridmap.refresh_astar(current_player)
-			current_player.start_move(selection)
+		if current_team == TEAMS.PLAYER:
+			
+			if name == "PlayerStaticBody":
+				var player = collider.get_parent()
+				select_player(player)
+				
+			if name == "GridMap":
+				gridmap.refresh_astar(current_player)
+				current_player.start_move(selection)
 	
 	if event.is_action_pressed('ui_focus_prev'):
 		var players = player_container.get_children()
@@ -119,6 +132,11 @@ func _unhandled_input(event):
 						next_player = players[i + 1]
 					select_player(next_player)
 					break
+func start_timer_next_turn():
+	_on_timer_next_turn_timeout()
+
+func _on_timer_next_turn_timeout():
+	next_turn()
 					
 func handle_hover():
 	var selection = get_objects_under_mouse()

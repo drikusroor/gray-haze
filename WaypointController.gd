@@ -17,3 +17,13 @@ func remove_waypoint(owner, position):
 	for child in get_children():
 			if child.translation == position and child._owner == owner:
 				child.queue_free()
+
+func hide_owner_waypoints(owner):
+	for child in get_children():
+		if child._owner == owner:
+			child.hide()
+			
+func show_owner_waypoints(owner):
+	for child in get_children():
+		if child._owner == owner:
+			child.show()

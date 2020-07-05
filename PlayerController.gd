@@ -57,15 +57,19 @@ func reset_hp():
 
 func deselect():
 	if _state == STATES.PLANNING:
-		waypoint_container.remove_owner_waypoints(self)
-	player_sprite.opacity = 0.5
+		waypoint_container.hide_owner_waypoints(self)
+	player_sprite.opacity = 0.6
 	if selected:
 		selected = false
+	emit_signal("player_updated")
 		
 func select():
 	player_sprite.opacity = 1
 	if not selected:
 		selected = true
+	if _state == STATES.PLANNING:
+		waypoint_container.show_owner_waypoints(self)
+	emit_signal("player_updated")
 		
 func draw_waypoints(path):
 	var ap_left = ap
