@@ -122,6 +122,7 @@ func _change_state(new_state):
 		player_audio.stop()
 		
 	_state = new_state
+	emit_signal("player_updated")
 
 func _process(_delta):
 	var camera_pos = get_viewport().get_camera().global_transform.origin
@@ -137,7 +138,6 @@ func _process(_delta):
 		
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
-		
 		
 		ap -= 2
 		emit_signal("player_updated")
