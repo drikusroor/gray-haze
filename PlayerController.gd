@@ -170,7 +170,7 @@ func start_move(selection):
 		
 func _unhandled_input(event):
 	if event.is_action_pressed('ui_cancel'):
-		if _state == STATES.PLANNING:
+		if _state == STATES.PLANNING and selected:
 			target_translation = null
 			waypoint_container.remove_owner_waypoints(self)
 			_change_state(STATES.IDLE)

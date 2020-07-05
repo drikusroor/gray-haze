@@ -2,10 +2,13 @@
 
 ## Progress
 
+## Update 2020-07-05
+
+![docs/progress/04-update-path-user-selected.gif](docs/progress/04-update-path-user-selected.gif)
+
 ## Update 2020-07-04
 
 Third update here. Calculation of path now takes into account the position of other players and their respective target positions (the place they would like to move to). Also, the max amount of steps a player can take is now determined by the action point it has. Later, these action points will be reset after each and every round. Not bad if I can say so myself. In fact, it is quite the milestone for the noob I am.
-
 
 ![docs/progress/03-adaptive-pathfinding-action-points.gif](docs/progress/03-adaptive-pathfinding-action-points.gif)
 
