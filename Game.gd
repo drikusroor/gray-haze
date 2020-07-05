@@ -8,6 +8,7 @@ var RAY_LENGTH = 444444444444444 #Arbitrarily large ray
 enum GAME_STATES { PAUSED, MAIN_MENU, CUTSCENE, PLAYING }
 enum TEAMS { PLAYER, AXIS, CIVILIANS, SPECIAL }
 signal select_player(player)
+signal start_turn(team)
 onready var current_team = TEAMS.PLAYER
 onready var current_player = null
 onready var player_container = get_node("/root/Game/PlayerContainer")
@@ -27,7 +28,6 @@ func next_round():
 		player.reset_ap()
 	set_current_team(TEAMS.PLAYER)
 	start_turn()
-	
 		
 func next_turn():
 	if current_team == TEAMS.PLAYER:
@@ -43,6 +43,9 @@ func next_turn():
 	start_turn()
 		
 func start_turn():
+	
+	emit_signal("start_turn", current_team)
+	
 	if current_team == TEAMS.PLAYER:
 		# TODO Enable menu
 		

@@ -42,6 +42,7 @@ var _name = ""
 
 func _ready():
 	_change_state(STATES.IDLE)
+	game.connect( "start_turn", self, "_on_start_turn" )
 	
 func init_player(position, data):
 	_name = data.name
@@ -51,9 +52,17 @@ func init_player(position, data):
 	
 func reset_ap():
 	ap = max_ap
+	emit_signal("player_updated")
 	
 func reset_hp():
 	hp = max_hp
+	emit_signal("player_updated")
+	
+func _on_start_turn(team):
+	if team == game.TEAMS.PLAYER and path.size() > 0:
+		gridmap.refresh_astar(self)
+		path = gridmap.find_path(translation, target_translation)
+		draw_waypoints()
 
 func deselect():
 	player_sprite.opacity = 0.6
