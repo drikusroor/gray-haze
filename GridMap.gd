@@ -238,8 +238,6 @@ func _recalculate_path():
 	clear_previous_path_drawing()
 	var start_point_index = calculate_point_index(Vector3(path_start_position.x, path_start_position.y, path_start_position.z))
 	var end_point_index = calculate_point_index(Vector3(path_end_position.x, path_end_position.y, path_end_position.z))
-	print(game.current_player._name, " P start ", path_start_position, " - ", start_point_index)
-	print(game.current_player._name, " P end ", path_end_position, " - ", end_point_index)
 	_point_path = astar_node.get_point_path(start_point_index, end_point_index)
 	
 func clear_previous_path_drawing():

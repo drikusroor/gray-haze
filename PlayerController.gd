@@ -16,11 +16,11 @@ export(bool) var selected = false
 
 var _player_type = PLAYER_TYPES.PLAYER
 var _player_team = PLAYER_TEAMS.ALLIES
-var _state = null
+var _state
 
 var path = []
 var target_point_world = Vector3()
-var target_translation = Vector3()
+var target_translation
 
 var velocity = Vector3()
 
@@ -157,7 +157,9 @@ func move_to(world_position):
 func start_move(selection):	
 	var position3D = selection.position
 	var gridmap_position = gridmap.world_to_grid(position3D)
-	var target_translation_gridmap_position = gridmap.world_to_grid(target_translation)
+	var target_translation_gridmap_position
+	if target_translation:
+		target_translation_gridmap_position = gridmap.world_to_grid(target_translation)
 	
 	waypoint_container.remove_owner_waypoints(self)
 	if gridmap_position == target_translation_gridmap_position:
@@ -169,5 +171,6 @@ func start_move(selection):
 func _unhandled_input(event):
 	if event.is_action_pressed('ui_cancel'):
 		if _state == STATES.PLANNING:
+			target_translation = null
 			waypoint_container.remove_owner_waypoints(self)
 			_change_state(STATES.IDLE)
