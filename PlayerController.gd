@@ -56,8 +56,6 @@ func reset_hp():
 	hp = max_hp
 
 func deselect():
-	if _state == STATES.PLANNING:
-		waypoint_container.hide_owner_waypoints(self)
 	player_sprite.opacity = 0.6
 	if selected:
 		selected = false
@@ -67,11 +65,16 @@ func select():
 	player_sprite.opacity = 1
 	if not selected:
 		selected = true
+		
 	if _state == STATES.PLANNING:
-		waypoint_container.show_owner_waypoints(self)
+		gridmap.refresh_astar(self)
+		path = gridmap.find_path(translation, target_translation)
+		draw_waypoints()
+		
 	emit_signal("player_updated")
 		
-func draw_waypoints(path):
+func draw_waypoints():
+	waypoint_container.remove_owner_waypoints(self)
 	var ap_left = ap
 	for node_i in range(path.size()):
 		var node = path[node_i]
@@ -90,15 +93,11 @@ func draw_waypoints(path):
 		
 		if ap_left < 0:
 			waypoint.set_type(1)
-		
-		# if node_i == path.size() - 1:
-			# TODO: Set text of last waypoint with AP cost of move
-			# waypoint.set_ap_cost(ap_left)
 
 func _change_state(new_state):
 	if new_state == STATES.PLANNING:
 		path = gridmap.find_path(translation, target_translation)
-		draw_waypoints(path)
+		draw_waypoints()
 			
 	elif new_state == STATES.FOLLOW:
 		if not path or len(path) == 0:
@@ -107,7 +106,7 @@ func _change_state(new_state):
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
 		player_audio.play()
-		draw_waypoints(path)
+		draw_waypoints()
 		target_point_world = path[0]
 		
 	if new_state != STATES.FOLLOW:
@@ -115,7 +114,7 @@ func _change_state(new_state):
 		
 	_state = new_state
 
-func _process(delta):
+func _process(_delta):
 	var camera_pos = get_viewport().get_camera().global_transform.origin
 	camera_pos.y = 0
 	look_at(camera_pos, Vector3(0, 1, 0))

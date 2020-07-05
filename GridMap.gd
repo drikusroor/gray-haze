@@ -1,5 +1,6 @@
 extends GridMap
 
+onready var game = get_parent()
 onready var player_container = get_parent().get_node("PlayerContainer")
 onready var waypoint_container = get_node("WaypointContainer")
 
@@ -82,7 +83,7 @@ func get_player_positions():
 func get_target_positions():
 	var target_positions = []
 	for waypoint in waypoint_container.get_children():
-		if waypoint.target:
+		if waypoint.target and not game.current_player == waypoint._owner:
 			target_positions.append(world_to_grid(waypoint.translation))
 	
 	return target_positions
@@ -180,7 +181,6 @@ func astar_connect_walkable_cells_diagonal(points_array):
 
 
 func is_outside_map_bounds(point):
-	print(map_size)
 	return point.x < 0 or point.y < 0 or point.x >= map_size.x or point.y >= map_size.y
 
 func calculate_point_index(point):
@@ -225,6 +225,7 @@ func find_path(world_start, world_end):
 	_set_path_start_position(world_to_grid(world_start))
 	_set_path_end_position(world_to_grid(world_end))
 	_recalculate_path()
+	
 	var path_world = []
 	for point in _point_path:
 		var point_world = grid_to_world(Vector3(point.x, point.y, point.z))
@@ -237,31 +238,18 @@ func _recalculate_path():
 	clear_previous_path_drawing()
 	var start_point_index = calculate_point_index(Vector3(path_start_position.x, path_start_position.y, path_start_position.z))
 	var end_point_index = calculate_point_index(Vector3(path_end_position.x, path_end_position.y, path_end_position.z))
-	var cells = get_used_cells()
-	# This method gives us an array of points. Note you need the start and end
-	# points' indices as input
+	print(game.current_player._name, " P start ", path_start_position, " - ", start_point_index)
+	print(game.current_player._name, " P end ", path_end_position, " - ", end_point_index)
 	_point_path = astar_node.get_point_path(start_point_index, end_point_index)
-	# Redraw the lines and circles from the start to the end point
-#	update()
-
-
+	
 func clear_previous_path_drawing():
-	if not _point_path:
-		return
-	var point_start = _point_path[0]
-	var point_end = _point_path[len(_point_path) - 1]
-#	set_cell_item(point_start.x, point_start.y, point_start.z, 2)
-#	set_cell_item(point_end.x, point_end.y, point_end.z, 2)
-
+	_point_path = []
 
 func _draw():
 	if not _point_path:
 		return
 	var point_start = _point_path[0]
 	var point_end = _point_path[len(_point_path) - 1]
-
-#	set_cell_item(point_start.x, point_start.y, point_start.z, 1)
-#	set_cell_item(point_end.x, point_end.y, point_end.z, 2)
 
 	var last_point = grid_to_world(Vector3(point_start.x, point_start.y, point_start.z)) # + _half_cell_size
 	for index in range(1, len(_point_path)):
