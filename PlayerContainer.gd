@@ -46,8 +46,20 @@ func init_players():
 func get_children_of_type(type):
 	var players_of_type = []
 	for player in get_children():
-		if player._player_type == type:
+		if player.player_type == type:
 			players_of_type.append(player)
 
 	return players_of_type
 	
+func get_children_of_team(team):
+	var players_of_type = []
+	for player in get_children():
+		if player.player_team == team:
+			players_of_type.append(player)
+
+	return players_of_type
+	
+func get_visible_children_of_team(client_team, target_team):
+	# TODO Add functionality to only return players that are
+	# visible for the team in question
+	return get_children_of_team(target_team)

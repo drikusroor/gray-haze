@@ -12,8 +12,9 @@ enum STATES { IDLE, PLANNING, FOLLOW }
 enum WALKING_SPEED { SNEAK, WALK, RUN }
 export(bool) var selected = false
 
-var _player_type
-var _player_team
+var player_type
+var player_team
+var enemy_team
 var _state
 
 var path = []
@@ -28,9 +29,13 @@ signal player_updated(player)
 onready var waypoint_correct_scene = preload("res://Waypoint.tscn")
 onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
 
+# Textures
+var textures = [load("res://assets/sprites/allied.png"), load("res://assets/sprites/axis.png")]
+
 # HOC components
 onready var game = get_node("/root/Game")
 onready var gridmap = get_node("/root/Game/GridMap")
+onready var player_container = get_parent()
 
 # Children
 onready var player_sprite = get_node("PlayerSprite")
@@ -42,16 +47,29 @@ func _ready():
 	_change_state(STATES.IDLE)
 	game.connect( "start_turn", self, "_on_start_turn" )
 	
+	if player_team == game.PLAYER_TEAMS.PLAYER:
+		enemy_team = game.PLAYER_TEAMS.ENEMY
+		set_sprite(0)
+	elif player_team == game.PLAYER_TEAMS.ENEMY:
+		enemy_team = game.PLAYER_TEAMS.PLAYER
+		set_sprite(1)
+	else:
+		enemy_team = game.PLAYER_TEAMS.ENEMY
+		set_sprite(1)
+	
 func init_player(position, data):
 	_name = data.name
 	max_hp = data.max_hp
-	_player_type = data.type
-	_player_team = data.team
-	
+	player_type = data.type
+	player_team = data.team	
 	reset_ap()
 	reset_hp()
 	translation = position
-	
+
+func set_sprite(new_type):
+	var _type = new_type
+	player_sprite.texture = textures[new_type]
+
 func reset_ap():
 	ap = max_ap
 	emit_signal("player_updated")
@@ -185,3 +203,25 @@ func _unhandled_input(event):
 			target_translation = null
 			waypoint_container.remove_owner_waypoints(self)
 			_change_state(STATES.IDLE)
+
+func do_turn_actions():
+	var enemies = player_container.get_visible_children_of_team(player_team, enemy_team)
+
+#	if enemies.size() == 0:
+#		enemies = get_most_recent_sightings(enemy_team)
+	
+	if enemies.size() > 0:
+		var closest_enemy = enemies[0]
+	else:
+		# Walk to random spot in map
+		game.next_turn()
+	
+	var colleagues = player_container.get_children_of_team(player_team)
+	for c_idx in range(colleagues.size()):
+		var colleague = colleagues[c_idx]
+		if colleague == self:
+			if c_idx == colleagues.size() - 1:
+				game.next_turn()
+			else:
+				var next_colleague = colleagues[c_idx + 1]
+				next_colleague.do_turn_actions()		

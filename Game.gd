@@ -61,7 +61,11 @@ func start_turn():
 		pass
 		
 	if current_team == PLAYER_TEAMS.ENEMY:
-		start_timer_next_turn()
+		var enemies = player_container.get_children_of_type(current_team)
+		if enemies.size() > 0:
+			enemies[0].do_turn_actions()
+		else:
+			start_timer_next_turn()
 		
 	if current_team == PLAYER_TEAMS.CIVILIAN:
 		start_timer_next_turn()
@@ -106,7 +110,7 @@ func _unhandled_input(event):
 			
 			if name == "PlayerStaticBody":
 				var player = collider.get_parent()
-				if player._player_type == PLAYER_TYPES.PLAYER:
+				if player.player_type == PLAYER_TYPES.PLAYER:
 					select_player(player)
 				
 			if name == "GridMap":
