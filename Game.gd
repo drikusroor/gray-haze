@@ -6,10 +6,11 @@ var RAY_LENGTH = 444444444444444 #Arbitrarily large ray
 # var b = "text"
 
 enum GAME_STATES { PAUSED, MAIN_MENU, CUTSCENE, PLAYING }
-enum TEAMS { PLAYER, AXIS, CIVILIANS, SPECIAL }
+enum PLAYER_TYPES { PLAYER, NPC }
+enum PLAYER_TEAMS { PLAYER, ENEMY, CIVILIAN, SPECIAL }
 signal select_player(player)
 signal start_turn(team)
-onready var current_team = TEAMS.PLAYER
+onready var current_team = PLAYER_TEAMS.PLAYER
 onready var current_player = null
 onready var player_container = get_node("/root/Game/PlayerContainer")
 onready var gridmap = get_node("GridMap")
@@ -26,16 +27,16 @@ func end_round():
 func next_round():
 	for player in player_container.get_children():
 		player.reset_ap()
-	set_current_team(TEAMS.PLAYER)
+	set_current_team(PLAYER_TEAMS.PLAYER)
 	start_turn()
 		
 func next_turn():
-	if current_team == TEAMS.PLAYER:
-		set_current_team(TEAMS.AXIS)
-	elif current_team == TEAMS.AXIS:
-		set_current_team(TEAMS.CIVILIANS)
-	elif current_team == TEAMS.CIVILIANS:
-		set_current_team(TEAMS.SPECIAL)
+	if current_team == PLAYER_TEAMS.PLAYER:
+		set_current_team(PLAYER_TEAMS.ENEMY)
+	elif current_team == PLAYER_TEAMS.ENEMY:
+		set_current_team(PLAYER_TEAMS.CIVILIAN)
+	elif current_team == PLAYER_TEAMS.CIVILIAN:
+		set_current_team(PLAYER_TEAMS.SPECIAL)
 	else:
 		end_round()
 		next_round()
@@ -46,7 +47,7 @@ func start_turn():
 	
 	emit_signal("start_turn", current_team)
 	
-	if current_team == TEAMS.PLAYER:
+	if current_team == PLAYER_TEAMS.PLAYER:
 		# TODO Enable menu
 		
 		if player_container:
@@ -59,13 +60,13 @@ func start_turn():
 		# TODO Disable menu
 		pass
 		
-	if current_team == TEAMS.AXIS:
+	if current_team == PLAYER_TEAMS.ENEMY:
 		start_timer_next_turn()
 		
-	if current_team == TEAMS.CIVILIANS:
+	if current_team == PLAYER_TEAMS.CIVILIAN:
 		start_timer_next_turn()
 		
-	if current_team == TEAMS.SPECIAL:
+	if current_team == PLAYER_TEAMS.SPECIAL:
 		start_timer_next_turn()
 			
 func set_current_team(team):
@@ -101,11 +102,12 @@ func _unhandled_input(event):
 		var collider = selection.collider
 		var name = collider.get_name()
 		
-		if current_team == TEAMS.PLAYER:
+		if current_team == PLAYER_TEAMS.PLAYER:
 			
 			if name == "PlayerStaticBody":
 				var player = collider.get_parent()
-				select_player(player)
+				if player._player_type == PLAYER_TYPES.PLAYER:
+					select_player(player)
 				
 			if name == "GridMap":
 				gridmap.refresh_astar(current_player)
@@ -123,6 +125,7 @@ func _unhandled_input(event):
 						prev_player = players[i - 1]
 					select_player(prev_player)
 					break
+					
 	elif event.is_action_pressed('ui_focus_next'):
 		var players = player_container.get_children()
 		if (players.size() > 0):
@@ -135,6 +138,7 @@ func _unhandled_input(event):
 						next_player = players[i + 1]
 					select_player(next_player)
 					break
+					
 func start_timer_next_turn():
 	_on_timer_next_turn_timeout()
 

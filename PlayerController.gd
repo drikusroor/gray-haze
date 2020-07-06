@@ -8,14 +8,12 @@ var ap = 25
 var max_hp = 25
 var hp = 25
 
-enum PLAYER_TYPES { PLAYER, NPC }
-enum PLAYER_TEAMS { ALLIES, AXIS, CIVILIANS }
 enum STATES { IDLE, PLANNING, FOLLOW }
 enum WALKING_SPEED { SNEAK, WALK, RUN }
 export(bool) var selected = false
 
-var _player_type = PLAYER_TYPES.PLAYER
-var _player_team = PLAYER_TEAMS.ALLIES
+var _player_type
+var _player_team
 var _state
 
 var path = []
@@ -46,6 +44,10 @@ func _ready():
 	
 func init_player(position, data):
 	_name = data.name
+	max_hp = data.max_hp
+	_player_type = data.type
+	_player_team = data.team
+	
 	reset_ap()
 	reset_hp()
 	translation = position
@@ -59,7 +61,7 @@ func reset_hp():
 	emit_signal("player_updated")
 	
 func _on_start_turn(team):
-	if team == game.TEAMS.PLAYER and path.size() > 0:
+	if team == game.PLAYER_TEAMS.PLAYER and path.size() > 0:
 		gridmap.refresh_astar(self)
 		path = gridmap.find_path(translation, target_translation)
 		draw_waypoints()

@@ -16,7 +16,7 @@ func _on_TabContainer_tab_changed(i):
 		game.select_player(tab._player)
 
 func _on_players_initialized():
-	var players = player_container.get_children()
+	var players = player_container.get_children_of_type(game.PLAYER_TEAMS.PLAYER)
 	for i in range(players.size()):
 		var tab = tab_scene.instance()
 		var player = players[i]
