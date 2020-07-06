@@ -2,11 +2,17 @@
 
 ## Progress
 
+## Update 2020-07-06
+
+Fifth update here. Added camera movement with arrow keys. Added enemies and paved the way for adding AI. Maybe I'm not such a noob after all.
+
+![docs/progress/05-camera-enemies.gif](docs/progress/05-camera-enemies.gif)
+
 ## Update 2020-07-05
 
-![docs/progress/04-update-path-user-selected.gif](docs/progress/04-update-path-user-selected.gif)
-
 Fourth update here. Whenever a user gets selected, its planned path gets recalculated.
+
+![docs/progress/04-update-path-user-selected.gif](docs/progress/04-update-path-user-selected.gif)
 
 ## Update 2020-07-04
 
