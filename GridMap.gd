@@ -61,12 +61,15 @@ func is_walkable_cell(position):
 	for player_position in player_positions:
 		if player_position == position:
 			return false
+			
+	return true
 	
+func is_valid_target_position(position):
 	for target_position in target_positions:
 		if target_position == position:
 			return false
 			
-	return true
+	return is_walkable_cell(position)
 	
 func get_obstacles():
 	obstacles = get_used_cells_by_id(1)
@@ -220,11 +223,24 @@ func grid_to_world(pos):
 		pos.z * cell_size.z # + offset.z
 	);
 	return world_pos;
+	
+func get_adjacent_tiles(grid_pos):
+	var tiles = []
+	tiles.append(grid_pos + Vector3(-1, 0, 0))
+	tiles.append(grid_pos + Vector3(1, 0, 0))
+	tiles.append(grid_pos + Vector3(0, -1, 0))
+	tiles.append(grid_pos + Vector3(0, 1, 0))
+	tiles.append(grid_pos + Vector3(0, 0, -1))
+	tiles.append(grid_pos + Vector3(0, 0, 1))
+	return tiles
 
 func find_path(world_start, world_end):
 	_set_path_start_position(world_to_grid(world_start))
 	_set_path_end_position(world_to_grid(world_end))
 	_recalculate_path()
+	
+	if not is_valid_target_position(path_end_position):
+		return []
 	
 	var path_world = []
 	for point in _point_path:

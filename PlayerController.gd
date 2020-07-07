@@ -79,7 +79,7 @@ func reset_hp():
 	emit_signal("player_updated")
 	
 func _on_start_turn(team):
-	if team == game.PLAYER_TEAMS.PLAYER and path.size() > 0:
+	if team == game.PLAYER_TEAMS.PLAYER and player_team == team and path.size() > 0:
 		gridmap.refresh_astar(self)
 		path = gridmap.find_path(translation, target_translation)
 		draw_waypoints()
@@ -101,9 +101,13 @@ func select():
 		draw_waypoints()
 		
 	emit_signal("player_updated")
+	
+func get_grid_pos():
+	return gridmap.world_to_grid(translation)
 		
 func draw_waypoints():
 	waypoint_container.remove_owner_waypoints(self)
+	print(self._name, path)
 	var ap_left = ap
 	for node_i in range(path.size()):
 		var node = path[node_i]
@@ -205,6 +209,8 @@ func _unhandled_input(event):
 			_change_state(STATES.IDLE)
 
 func do_turn_actions():
+	waypoint_container.remove_owner_waypoints(self)
+	gridmap.refresh_astar(self)
 	var enemies = player_container.get_visible_children_of_team(player_team, enemy_team)
 
 #	if enemies.size() == 0:
@@ -212,6 +218,30 @@ func do_turn_actions():
 	
 	if enemies.size() > 0:
 		var closest_enemy = enemies[0]
+		var shortest_path
+		
+		for enemy in enemies:
+			var enemy_grid_pos = gridmap.world_to_grid(enemy.translation)
+			var adjacent_tiles = gridmap.get_adjacent_tiles(enemy_grid_pos)
+			var enemy_path
+			for adjacent_tile in adjacent_tiles:
+				if enemy_path:
+					break
+				else:
+					var path = gridmap.find_path(self.translation, gridmap.grid_to_world(adjacent_tile))
+					if path.size() > 0:
+						enemy_path = path
+			if !shortest_path or enemy_path.size() < shortest_path.size():
+				shortest_path = enemy_path
+				closest_enemy = enemy
+				
+		if shortest_path.size() > 0:
+			print("Shortest path from ", self._name, " towards ", closest_enemy._name, " is ", shortest_path.size())
+			path = shortest_path
+			target_translation = shortest_path[shortest_path.size() - 1]
+			draw_waypoints()
+			
+		
 	else:
 		# Walk to random spot in map
 		game.next_turn()

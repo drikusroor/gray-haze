@@ -26,7 +26,7 @@ func init_players():
 		for cell_i in range(cells.size()):
 			var spawn_cell = cells[cell_i]
 			if p_data.type == game.PLAYER_TEAMS.ENEMY:
-				spawn_cell = cells[cells.size() - cell_i - 1]
+				spawn_cell = cells[cells.size() - cell_i - 55]
 			var cell_id = gridmap.get_cell_item(spawn_cell.x, spawn_cell.y, spawn_cell.z)
 			var world_position = gridmap.grid_to_world(spawn_cell)
 			var valid_position = true
