@@ -12,7 +12,8 @@ signal select_player(player)
 signal start_turn(team)
 onready var current_team = PLAYER_TEAMS.PLAYER
 onready var current_player = null
-onready var player_container = get_node("/root/Game/PlayerContainer")
+onready var player_container = get_node("PlayerContainer")
+onready var waypoint_container = get_node("GridMap/WaypointContainer")
 onready var gridmap = get_node("GridMap")
 
 # Called when the node enters the scene tree for the first time.
@@ -25,6 +26,7 @@ func end_round():
 	pass # insert function body here
 
 func next_round():
+	print(waypoint_container.get_children().size())
 	for player in player_container.get_children():
 		player.reset_ap()
 	set_current_team(PLAYER_TEAMS.PLAYER)
