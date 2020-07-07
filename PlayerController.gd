@@ -101,6 +101,9 @@ func select():
 		draw_waypoints()
 		
 	emit_signal("player_updated")
+	
+func get_grid_pos():
+	return gridmap.world_to_grid(translation)
 		
 func draw_waypoints():
 	waypoint_container.remove_owner_waypoints(self)
@@ -212,6 +215,7 @@ func do_turn_actions():
 	
 	if enemies.size() > 0:
 		var closest_enemy = enemies[0]
+		var enemy_grid_pos = closest_enemy.translation
 	else:
 		# Walk to random spot in map
 		game.next_turn()

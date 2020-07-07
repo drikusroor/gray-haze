@@ -220,6 +220,16 @@ func grid_to_world(pos):
 		pos.z * cell_size.z # + offset.z
 	);
 	return world_pos;
+	
+func get_adjacent_tiles(grid_pos):
+	var tiles = []
+	tiles.append(grid_pos + Vector3(-1, 0, 0))
+	tiles.append(grid_pos + Vector3(1, 0, 0))
+	tiles.append(grid_pos + Vector3(0, -1, 0))
+	tiles.append(grid_pos + Vector3(0, 1, 0))
+	tiles.append(grid_pos + Vector3(0, 0, -1))
+	tiles.append(grid_pos + Vector3(0, 0, 1))
+	return tiles
 
 func find_path(world_start, world_end):
 	_set_path_start_position(world_to_grid(world_start))
