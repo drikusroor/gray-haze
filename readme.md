@@ -2,6 +2,12 @@
 
 ## Progress
 
+## Update 2020-07-08
+
+Sixth update here. Added some basic AI for the enemy to plan a path towards the nearest player and start walking. After being done walking of having no AP left, the enemy player switches to the next enemy player or ends the turn. Next steps will be shooting. What is a noob anyway?
+
+![docs/progress/06-enemy-walks-to-player.gif](docs/progress/06-enemy-walks-to-player.gif)
+
 ## Update 2020-07-06
 
 Fifth update here. Added camera movement with arrow keys. Added enemies and paved the way for adding AI. Maybe I'm not such a noob after all.
