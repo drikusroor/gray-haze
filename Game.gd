@@ -26,7 +26,6 @@ func end_round():
 	pass # insert function body here
 
 func next_round():
-	print(waypoint_container.get_children().size())
 	for player in player_container.get_children():
 		player.reset_ap()
 	set_current_team(PLAYER_TEAMS.PLAYER)

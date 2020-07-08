@@ -8,7 +8,7 @@ var ap = 25
 var max_hp = 25
 var hp = 25
 
-enum STATES { IDLE, PLANNING, FOLLOW }
+enum STATES { IDLE, PLANNING, FOLLOW, SHOOTING }
 enum WALKING_SPEED { SNEAK, WALK, RUN }
 export(bool) var selected = false
 
@@ -107,7 +107,6 @@ func get_grid_pos():
 		
 func draw_waypoints():
 	waypoint_container.remove_owner_waypoints(self)
-	print(self._name, path)
 	var ap_left = ap
 	for node_i in range(path.size()):
 		var node = path[node_i]
@@ -142,17 +141,18 @@ func _change_state(new_state):
 		draw_waypoints()
 		target_point_world = path[0]
 		
+	elif new_state == STATES.IDLE:
+		if player_type == game.PLAYER_TYPES.NPC:
+			# do next player in team
+			pass
+		
 	if new_state != STATES.FOLLOW:
 		player_audio.stop()
 		
 	_state = new_state
 	emit_signal("player_updated")
 
-func _process(_delta):
-	var camera_pos = get_viewport().get_camera().global_transform.origin
-	camera_pos.y = 0
-	look_at(camera_pos, Vector3(0, 1, 0))
-	
+func _process_player(_delta):
 	if not _state == STATES.FOLLOW:
 		return
 		
@@ -177,6 +177,45 @@ func _process(_delta):
 		
 		target_point_world = path[0]
 
+func _process_npc(_delta):
+	
+	if not _state == STATES.FOLLOW or _state == STATES.SHOOTING:
+		return
+	
+	if ap < 2:
+		_change_state(STATES.PLANNING)
+		switch_to_next_colleague()
+		return
+		
+	if _state == STATES.FOLLOW:
+		var arrived_to_next_point = move_to(target_point_world)
+		if arrived_to_next_point:
+			
+			ap -= 2
+			emit_signal("player_updated")
+			waypoint_container.remove_waypoint(self, path[0])
+					
+			var next_point = path[0]
+			path.remove(0)
+			if len(path) == 0:
+				waypoint_container.remove_owner_waypoints(self)
+				translation = next_point
+				_change_state(STATES.IDLE)
+				switch_to_next_colleague()
+				return
+			
+			target_point_world = path[0]
+
+func _process(_delta):
+	var camera_pos = get_viewport().get_camera().global_transform.origin
+	camera_pos.y = 0
+	look_at(camera_pos, Vector3(0, 1, 0))
+	
+	if (player_type == game.PLAYER_TYPES.NPC):
+		_process_npc(_delta)
+	elif (player_type == game.PLAYER_TYPES.PLAYER):
+		_process_player(_delta)
+	
 func move_to(world_position):
 	var MASS = 1.0
 	var ARRIVE_DISTANCE = 0.1
@@ -218,12 +257,12 @@ func do_turn_actions():
 	
 	if enemies.size() > 0:
 		var closest_enemy = enemies[0]
-		var shortest_path
+		var shortest_path = []
 		
 		for enemy in enemies:
 			var enemy_grid_pos = gridmap.world_to_grid(enemy.translation)
 			var adjacent_tiles = gridmap.get_adjacent_tiles(enemy_grid_pos)
-			var enemy_path
+			var enemy_path = []
 			for adjacent_tile in adjacent_tiles:
 				if enemy_path:
 					break
@@ -236,16 +275,17 @@ func do_turn_actions():
 				closest_enemy = enemy
 				
 		if shortest_path.size() > 0:
-			print("Shortest path from ", self._name, " towards ", closest_enemy._name, " is ", shortest_path.size())
 			path = shortest_path
 			target_translation = shortest_path[shortest_path.size() - 1]
 			draw_waypoints()
+			_change_state(STATES.FOLLOW)
 			
 		
 	else:
 		# Walk to random spot in map
 		game.next_turn()
-	
+
+func switch_to_next_colleague():
 	var colleagues = player_container.get_children_of_team(player_team)
 	for c_idx in range(colleagues.size()):
 		var colleague = colleagues[c_idx]
