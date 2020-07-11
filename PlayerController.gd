@@ -17,6 +17,9 @@ var player_team
 var enemy_team
 var _state
 
+var sees = []
+var is_seen_by = []
+
 var path = []
 var target_point_world = Vector3()
 var target_translation
@@ -30,7 +33,8 @@ onready var waypoint_correct_scene = preload("res://Waypoint.tscn")
 onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
 
 # Textures
-var textures = [load("res://assets/sprites/allied.png"), load("res://assets/sprites/axis.png")]
+var player_textures = [load("res://assets/sprites/allied.png"), load("res://assets/sprites/allied_selected.png")]
+var enemy_textures = [load("res://assets/sprites/axis.png")]
 
 # HOC components
 onready var game = get_node("/root/Game")
@@ -40,6 +44,7 @@ onready var player_container = get_parent()
 # Children
 onready var player_sprite = get_node("PlayerSprite")
 onready var player_audio = get_node("PlayerAudio")
+onready var player_icon_pos = get_node("PlayerIconPosition")
 
 var _name = ""
 
@@ -52,10 +57,10 @@ func _ready():
 		set_sprite(0)
 	elif player_team == game.PLAYER_TEAMS.ENEMY:
 		enemy_team = game.PLAYER_TEAMS.PLAYER
-		set_sprite(1)
+		set_sprite(0)
 	else:
 		enemy_team = game.PLAYER_TEAMS.ENEMY
-		set_sprite(1)
+		set_sprite(0)
 	
 func init_player(position, data):
 	_name = data.name
@@ -68,7 +73,10 @@ func init_player(position, data):
 
 func set_sprite(new_type):
 	var _type = new_type
-	player_sprite.texture = textures[new_type]
+	if player_team == game.PLAYER_TEAMS.PLAYER:
+		player_sprite.texture = player_textures[new_type]
+	else:
+		player_sprite.texture = enemy_textures[new_type]
 
 func reset_ap():
 	ap = max_ap
@@ -85,13 +93,13 @@ func _on_start_turn(team):
 		draw_waypoints()
 
 func deselect():
-	player_sprite.opacity = 0.6
+	set_sprite(0)
 	if selected:
 		selected = false
 	emit_signal("player_updated")
 		
 func select():
-	player_sprite.opacity = 1
+	set_sprite(1)
 	if not selected:
 		selected = true
 		
@@ -165,6 +173,7 @@ func _process_player(_delta):
 		
 		ap -= 2
 		emit_signal("player_updated")
+		player_container.perception_check()
 		waypoint_container.remove_waypoint(self, path[0])
 				
 		var next_point = path[0]
@@ -209,7 +218,7 @@ func _process_npc(_delta):
 func _process(_delta):
 	var camera_pos = get_viewport().get_camera().global_transform.origin
 	camera_pos.y = 0
-	look_at(camera_pos, Vector3(0, 1, 0))
+	player_sprite.look_at(camera_pos, Vector3(0, 1, 0))
 	
 	if (player_type == game.PLAYER_TYPES.NPC):
 		_process_npc(_delta)
@@ -295,3 +304,23 @@ func switch_to_next_colleague():
 			else:
 				var next_colleague = colleagues[c_idx + 1]
 				next_colleague.do_turn_actions()		
+
+func attack(enemy):
+	pass
+	
+func handle_enemy_hover(current_player):
+	pass
+
+func is_seen_by(player):
+	var is_seen = false
+	for enemy in is_seen_by:
+		if player == enemy:
+			is_seen = true
+	return is_seen
+
+func sees(player):
+	var sees_player = false
+	for enemy in sees:
+		if player == enemy:
+			sees_player = true
+	return sees_player

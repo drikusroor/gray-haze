@@ -6,6 +6,7 @@ onready var player_scene = preload("res://Player.tscn")
 onready var game = get_node("/root/Game")
 onready var gridmap = get_node("/root/Game/GridMap")
 signal players_initialized()
+signal perception_checked()
 onready var initial_players = [
 	{"name": "Drikus", "max_ap": 20, "max_hp": 20, "type": game.PLAYER_TYPES.PLAYER, "team": game.PLAYER_TEAMS.PLAYER },
 	{"name": "Adriana", "max_ap": 20, "max_hp": 20, "type": game.PLAYER_TYPES.PLAYER, "team": game.PLAYER_TEAMS.PLAYER },
@@ -41,7 +42,7 @@ func init_players():
 				add_child(player)
 				break
 			
-	emit_signal("players_initialized")	
+	emit_signal("players_initialized")
 
 func get_children_of_type(type):
 	var players_of_type = []
@@ -63,3 +64,21 @@ func get_visible_children_of_team(client_team, target_team):
 	# TODO Add functionality to only return players that are
 	# visible for the team in question
 	return get_children_of_team(target_team)
+	
+func perception_check():
+	for player in get_children():
+		var sees = []
+		var is_seen_by = []
+		for other in get_children():
+			if other == player:
+				pass
+			else:
+				var distance = player.translation.distance_to(other.translation)
+				if distance < 25:
+					sees.append(other)
+					is_seen_by.append(other)
+		player.sees = sees
+		player.is_seen_by = is_seen_by
+		
+	emit_signal("perception_checked")
+	
