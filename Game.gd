@@ -113,8 +113,9 @@ func _unhandled_input(event):
 				var player = collider.get_parent()
 				if player.player_type == PLAYER_TYPES.PLAYER:
 					select_player(player)
-				
-			if name == "GridMap":
+				elif player.player_type == PLAYER_TYPES.ENEMY:
+					current_player.attack(player)
+			elif name == "GridMap":
 				gridmap.refresh_astar(current_player)
 				current_player.start_move(selection)
 	
@@ -161,6 +162,13 @@ func handle_hover():
 	if name == "GridMap":
 		var gridmap = collider
 		gridmap.handle_hover(selection)
+	elif name == "PlayerStaticBody":
+		var player = collider.get_parent()
+		if player.player_type == PLAYER_TEAMS.PLAYER:
+			pass
+		elif player.player_type == PLAYER_TEAMS.ENEMY:
+			player.handle_enemy_hover(current_player)
+		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

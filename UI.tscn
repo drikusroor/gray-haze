@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://EndOfTurn.gd" type="Script" id=1]
 [ext_resource path="res://UI.gd" type="Script" id=2]
 [ext_resource path="res://TabController.gd" type="Script" id=3]
+[ext_resource path="res://EnemyIcons.gd" type="Script" id=4]
+[ext_resource path="res://EnemyIcon.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.137255, 0.121569, 0.109804, 1 )
@@ -72,6 +74,11 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="EnemyIcons" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="EnemyIcon" parent="EnemyIcons" instance=ExtResource( 5 )]
 [connection signal="select_player" from="." to="PlayerPanelContainer/PlayerPanel/TabContainer" method="_on_UI_select_player"]
 [connection signal="tab_changed" from="PlayerPanelContainer/PlayerPanel/TabContainer" to="PlayerPanelContainer/PlayerPanel/TabContainer" method="_on_TabContainer_tab_changed"]
 [connection signal="pressed" from="ActionPanelContainer/ActionPanel/EndOfTurn" to="ActionPanelContainer/ActionPanel/EndOfTurn" method="_on_EndOfTurn_pressed"]
