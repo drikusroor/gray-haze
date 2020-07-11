@@ -1,9 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://EnemyIcon.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/enemy_invisible_icon.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
 
 [node name="EnemyIcon" type="Sprite"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 script = ExtResource( 1 )
+
+[node name="EnemyIconStaticBody" type="StaticBody2D" parent="."]
+input_pickable = true
+
+[node name="EnemyIconCollisionShape" type="CollisionShape2D" parent="EnemyIconStaticBody"]
+scale = Vector2( 3.2, 3.2 )
+shape = SubResource( 1 )

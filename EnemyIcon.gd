@@ -7,6 +7,7 @@ var _player = null
 
 # Textures
 onready var camera = get_node("/root/Game/Camera")
+onready var cursor = get_node("/root/Game/Cursor")
 var icon_textures = [load("res://assets/sprites/enemy_invisible_icon.png"), load("res://assets/sprites/enemy_visible_icon.png")]
 
 # Called when the node enters the scene tree for the first time.

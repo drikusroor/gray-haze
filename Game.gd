@@ -15,6 +15,7 @@ onready var current_player = null
 onready var player_container = get_node("PlayerContainer")
 onready var waypoint_container = get_node("GridMap/WaypointContainer")
 onready var gridmap = get_node("GridMap")
+onready var cursor = get_node("Cursor")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -154,6 +155,7 @@ func _on_timer_next_turn_timeout():
 func handle_hover():
 	var selection = get_objects_under_mouse()
 	if (selection.size() == 0):
+		cursor.set_cursor(cursor.CURSOR_TYPES.FINGER)
 		return
 		
 	var collider = selection.collider
@@ -162,12 +164,15 @@ func handle_hover():
 	if name == "GridMap":
 		var gridmap = collider
 		gridmap.handle_hover(selection)
-	elif name == "PlayerStaticBody":
+		cursor.set_cursor(cursor.CURSOR_TYPES.FINGER)
+	elif name == "PlayerStaticBody" or name == "PlayerIconStaticBody":
 		var player = collider.get_parent()
 		if player.player_type == PLAYER_TEAMS.PLAYER:
 			pass
 		elif player.player_type == PLAYER_TEAMS.ENEMY:
 			player.handle_enemy_hover(current_player)
+	else:
+		cursor.set_cursor(cursor.CURSOR_TYPES.FINGER)
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

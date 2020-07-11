@@ -31,6 +31,7 @@ signal player_updated(player)
 # Scenes
 onready var waypoint_correct_scene = preload("res://Waypoint.tscn")
 onready var waypoint_container = get_node("/root/Game/GridMap/WaypointContainer")
+onready var cursor = get_node("/root/Game/Cursor")
 
 # Textures
 var player_textures = [load("res://assets/sprites/allied.png"), load("res://assets/sprites/allied_selected.png")]
@@ -310,6 +311,7 @@ func attack(enemy):
 	pass
 	
 func handle_enemy_hover(current_player):
+	cursor.set_cursor(cursor.CURSOR_TYPES.SHOOT)
 	pass
 
 func is_seen_by(player):
