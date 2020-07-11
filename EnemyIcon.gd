@@ -20,7 +20,7 @@ func set_sprite(new_type):
 func init(parent, player):
 	_parent = parent
 	_player = player
-	_player.connect( "player_updated", self, "_on_player_updated" )
+#	_player.connect("player_updated", self, "_on_player_updated")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

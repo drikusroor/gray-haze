@@ -17,6 +17,9 @@ var player_team
 var enemy_team
 var _state
 
+var sees = []
+var is_seen_by = []
+
 var path = []
 var target_point_world = Vector3()
 var target_translation
@@ -170,6 +173,7 @@ func _process_player(_delta):
 		
 		ap -= 2
 		emit_signal("player_updated")
+		player_container.perception_check()
 		waypoint_container.remove_waypoint(self, path[0])
 				
 		var next_point = path[0]
@@ -306,3 +310,17 @@ func attack(enemy):
 	
 func handle_enemy_hover(current_player):
 	pass
+
+func is_seen_by(player):
+	var is_seen = false
+	for enemy in is_seen_by:
+		if player == enemy:
+			is_seen = true
+	return is_seen
+
+func sees(player):
+	var sees_player = false
+	for enemy in sees:
+		if player == enemy:
+			sees_player = true
+	return sees_player
