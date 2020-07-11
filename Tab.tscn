@@ -20,8 +20,8 @@ __meta__ = {
 }
 
 [node name="PlayerName" type="RichTextLabel" parent="."]
-margin_left = 60.0
-margin_right = 279.0
+margin_left = 76.0
+margin_right = 295.0
 margin_bottom = 32.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
@@ -69,10 +69,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="selected_label" type="RichTextLabel" parent="."]
+margin_left = -4.0
+margin_top = 96.0
+margin_right = 68.0
+margin_bottom = 128.0
+rect_pivot_offset = Vector2( 96, 16 )
+custom_fonts/normal_font = SubResource( 1 )
+text = "Selected
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="HP" type="RichTextLabel" parent="."]
-margin_left = 60.0
+margin_left = 76.0
 margin_top = 24.0
-margin_right = 279.0
+margin_right = 295.0
 margin_bottom = 56.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
@@ -82,9 +96,9 @@ __meta__ = {
 }
 
 [node name="AP" type="RichTextLabel" parent="."]
-margin_left = 60.0
+margin_left = 76.0
 margin_top = 48.0
-margin_right = 279.0
+margin_right = 295.0
 margin_bottom = 80.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
@@ -94,10 +108,22 @@ __meta__ = {
 }
 
 [node name="STATE" type="RichTextLabel" parent="."]
-margin_left = 60.0
+margin_left = 76.0
 margin_top = 72.0
-margin_right = 279.0
+margin_right = 295.0
 margin_bottom = 104.0
+rect_pivot_offset = Vector2( 96, 16 )
+custom_fonts/normal_font = SubResource( 1 )
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SELECTED" type="RichTextLabel" parent="."]
+margin_left = 76.0
+margin_top = 96.0
+margin_right = 295.0
+margin_bottom = 128.0
 rect_pivot_offset = Vector2( 96, 16 )
 custom_fonts/normal_font = SubResource( 1 )
 scroll_active = false

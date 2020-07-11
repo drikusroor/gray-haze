@@ -202,6 +202,7 @@ func _process_npc(_delta):
 			
 			ap -= 2
 			emit_signal("player_updated")
+			player_container.perception_check()
 			waypoint_container.remove_waypoint(self, path[0])
 					
 			var next_point = path[0]
