@@ -10,6 +10,7 @@ var hp = 25
 
 enum STATES { IDLE, PLANNING, FOLLOW, SHOOTING }
 enum WALKING_SPEED { SNEAK, WALK, RUN }
+enum AIM_MODE { SNAP, AIMED, CAREFUL}
 export(bool) var selected = false
 
 var player_type
@@ -41,6 +42,7 @@ var enemy_textures = [load("res://assets/sprites/axis.png")]
 onready var game = get_node("/root/Game")
 onready var gridmap = get_node("/root/Game/GridMap")
 onready var player_container = get_parent()
+onready var cursor_text = get_node("/root/Game/CanvasLayer/CursorText")
 
 # Children
 onready var player_sprite = get_node("PlayerSprite")
@@ -310,9 +312,38 @@ func switch_to_next_colleague():
 func attack(enemy):
 	pass
 	
-func handle_enemy_hover(current_player):
+func calc_hit_rate(enemy):
+	# weapon accuracy
+	var weapon = "m1_garand"
+	var weapon_bonus = 0.1
+	
+	# weapon familiarity
+	var familiarity = 5
+	var familiarity_bonus = pow(1.01, familiarity) - 1
+	
+	# aim mode
+	var aim_mode = AIM_MODE.SNAP
+	var aim_bonus = aim_mode / 50
+	
+	# distance
+	var distance = translation.distance_to(enemy.translation)
+	
+	# visibility
+	
+	var hit_rate = (4 / distance) + weapon_bonus + familiarity_bonus + aim_bonus
+	if hit_rate > 1:
+		hit_rate = 1
+	elif hit_rate < 0.01:
+		hit_rate = 0.01
+		
+	return stepify(hit_rate, 0.01) 
+	
+func handle_enemy_hover(enemy):
 	cursor.set_cursor(cursor.CURSOR_TYPES.SHOOT)
-	pass
+	var hit_rate = calc_hit_rate(enemy)
+	var ap_text_node = cursor_text.get_node("CursorAPCostText")
+	var hit_rate_text_node = cursor_text.get_node("CursorHitRateText")
+	hit_rate_text_node.text = "ToHit:  " + str(hit_rate * 100) + "%"	
 
 func is_seen_by(player):
 	var is_seen = false

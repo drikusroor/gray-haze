@@ -170,7 +170,7 @@ func handle_hover():
 		if player.player_type == PLAYER_TEAMS.PLAYER:
 			pass
 		elif player.player_type == PLAYER_TEAMS.ENEMY:
-			player.handle_enemy_hover(current_player)
+			current_player.handle_enemy_hover(player)
 	else:
 		cursor.set_cursor(cursor.CURSOR_TYPES.FINGER)
 		

@@ -1,14 +1,21 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://EndOfTurn.gd" type="Script" id=1]
 [ext_resource path="res://UI.gd" type="Script" id=2]
 [ext_resource path="res://TabController.gd" type="Script" id=3]
 [ext_resource path="res://EnemyIcons.gd" type="Script" id=4]
-[ext_resource path="res://EnemyIcon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/fonts/cumberland.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.137255, 0.121569, 0.109804, 1 )
 corner_detail = 1
+
+[sub_resource type="DynamicFont" id=2]
+outline_size = 1
+outline_color = Color( 0.270588, 0.356863, 0.0941176, 1 )
+extra_spacing_bottom = -8
+extra_spacing_char = 2
+font_data = ExtResource( 5 )
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -78,7 +85,28 @@ __meta__ = {
 [node name="EnemyIcons" type="Node" parent="."]
 script = ExtResource( 4 )
 
-[node name="EnemyIcon" parent="EnemyIcons" instance=ExtResource( 5 )]
+[node name="CursorText" type="Node2D" parent="."]
+
+[node name="CursorAPCostText" type="Label" parent="CursorText"]
+margin_right = 113.0
+margin_bottom = 42.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.796078, 0.901961, 0.572549, 1 )
+text = "AP:  28"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CursorHitRateText" type="Label" parent="CursorText"]
+margin_top = 17.3712
+margin_right = 113.0
+margin_bottom = 59.3712
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.796078, 0.901961, 0.572549, 1 )
+text = "ToHit:  90%"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="select_player" from="." to="PlayerPanelContainer/PlayerPanel/TabContainer" method="_on_UI_select_player"]
 [connection signal="tab_changed" from="PlayerPanelContainer/PlayerPanel/TabContainer" to="PlayerPanelContainer/PlayerPanel/TabContainer" method="_on_TabContainer_tab_changed"]
 [connection signal="pressed" from="ActionPanelContainer/ActionPanel/EndOfTurn" to="ActionPanelContainer/ActionPanel/EndOfTurn" method="_on_EndOfTurn_pressed"]
